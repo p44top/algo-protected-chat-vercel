@@ -1,16 +1,13 @@
 import * as React from 'react'
 
-import { shareChat } from '@/app/actions'
 import { Button } from '@/components/ui/button'
 import { PromptForm } from '@/components/prompt-form'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import { IconShare } from '@/components/ui/icons'
 import { FooterText } from '@/components/footer'
-import { ChatShareDialog } from '@/components/chat-share-dialog'
 import { useAIState, useActions, useUIState } from 'ai/rsc'
-import type { AI } from '@/lib/chat/actions.server'
+import type { AI } from '@/lib/chat/actions'
 import { nanoid } from 'nanoid'
-import { UserMessage } from './stocks/message'
 
 export interface ChatPanelProps {
   id?: string
@@ -34,6 +31,7 @@ export function ChatPanel({
   const { submitUserMessage } = useActions()
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
 
+  // TODO: 이런 식으로 예시를 줄 수도 있음. 
   const exampleMessages = [
     {
       heading: 'What are the',
@@ -78,7 +76,7 @@ export function ChatPanel({
                     ...currentMessages,
                     {
                       id: nanoid(),
-                      display: <UserMessage>{example.message}</UserMessage>
+                      display: <div>{example.message}</div>
                     }
                   ])
 
@@ -112,17 +110,6 @@ export function ChatPanel({
                     <IconShare className="mr-2" />
                     Share
                   </Button>
-                  <ChatShareDialog
-                    open={shareDialogOpen}
-                    onOpenChange={setShareDialogOpen}
-                    onCopy={() => setShareDialogOpen(false)}
-                    shareChat={shareChat}
-                    chat={{
-                      id,
-                      title,
-                      messages: aiState.messages
-                    }}
-                  />
                 </>
               ) : null}
             </div>

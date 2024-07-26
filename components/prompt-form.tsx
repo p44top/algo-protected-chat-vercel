@@ -4,9 +4,7 @@ import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
 
 import { useActions, useUIState } from 'ai/rsc'
-
-import { UserMessage } from './stocks/message'
-import { type AI } from '@/lib/chat/actions.server'
+import { type AI } from '@/lib/chat/actions'
 import { Button } from '@/components/ui/button'
 import { IconArrowElbow, IconPlus } from '@/components/ui/icons'
 import {
@@ -57,7 +55,7 @@ export function PromptForm({
           ...currentMessages,
           {
             id: nanoid(),
-            display: <UserMessage>{value}</UserMessage>
+            display: <div>{value}</div>
           }
         ])
 

@@ -1,4 +1,5 @@
 import { ChatList } from "@/components/chat-list"
+import { Button } from "@/components/ui/button"
 
 
 export const metadata = {
@@ -38,7 +39,14 @@ const ChatDemo = () => {
 export default async function IndexPage() {
   return (
     <div>
-      <ChatDemo />
+      <div className="h-[calc(100vh_-_theme(spacing.56))] overflow-y-auto">
+        <ChatDemo />
+      </div>
+
+      <div className="bg-background fixed inset-x-0 bottom-0 px-4 py-4 w-full border-t-2">
+        <Button size='cta'>시작하기</Button>
+      </div>
+
     </div>
   )
 }

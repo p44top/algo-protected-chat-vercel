@@ -1,9 +1,14 @@
+import { LogoSVG, LogoWithTextSVG } from "@/components/assets/logo"
+
 export const metadata = {
   title: 'Algo범죄'
 }
 
 export default async function IndexPage() {
   return (
-    <div>home</div>
+    <div>
+      <LogoSVG />
+      <LogoWithTextSVG/>
+    </div>
   )
 }

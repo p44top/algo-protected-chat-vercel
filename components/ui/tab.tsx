@@ -45,7 +45,7 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
     return (
       <TabsContext.Provider value={{ name, defaultSelected }}>
         <Comp
-          className={cn(className = "flex gap-2 px-2 py-2 pb-3 w-full overflow-x-auto bg-primary", className)}
+          className={cn(className = "flex gap-2 px-2 py-2 pb-3 w-full overflow-x-auto scrollbar-hide bg-primary", className)}
           ref={ref}
           {...props}
         />

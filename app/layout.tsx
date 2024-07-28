@@ -2,7 +2,6 @@ import '@/app/globals.css'
 import localFont from "next/font/local";
 import { cn } from '@/lib/utils'
 import { Providers } from '@/components/providers'
-import { Header } from '@/components/header'
 import { Toaster } from '@/components/ui/sonner'
 
 const pretendard = localFont({
@@ -55,8 +54,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen">
-            <Header />
+          <div className="min-h-screen">
             <main className="flex flex-col flex-1 bg-background">{children}</main>
           </div>
         </Providers>

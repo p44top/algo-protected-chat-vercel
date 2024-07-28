@@ -66,6 +66,11 @@ module.exports = {
           900: '#222',
         }
       },
+      boxShadow: {
+        'sm': '0 0px 3px var(--shadow-c)',
+        'md': '0 -2px 10px var(--shadow-c)',
+        'lg': '0 -2px 20px var(--shadow-c)',
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

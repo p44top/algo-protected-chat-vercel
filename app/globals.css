@@ -28,11 +28,12 @@
     --destructive: 18 100% 49%;
     --destructive-foreground: 0 0% 99%;
 
+    --shadow-c: rgba(0, 0, 0, 0.18);
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
  
-    --radius: 0.5rem;
+    --radius: 12px;
   }
  
   .dark {
@@ -60,6 +61,7 @@
     --destructive: 18 100% 49%;
     --destructive-foreground: 0 0% 2%;
  
+    --shadow-c: rgba(255, 255, 255, 0.2);
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;

@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { useRef, useState } from 'react'
 
 const schema = z.object({
+  //이름, 생년월일 검증을 위한 스키마
   name: z.string().min(1, { message: '이름은 필수입니다!' }),
   birth: z
     .string()
@@ -23,6 +24,7 @@ const schema = z.object({
   gender: z.enum(['남성', '여성', '이외'])
 })
 
+//위에서 정한 스키마와 같은 타입을 정함
 type IFormInput = z.infer<typeof schema>
 
 export default function App() {
@@ -46,6 +48,7 @@ export default function App() {
     Object.values(errors).forEach((error: any) => {
       toast.error(error.message)
     })
+    //생년월일 부분만 focus되지 않는 현상으로 인해 useRef로 작성
     if (errors.birth) {
       birthRef.current?.focus()
     }
@@ -53,6 +56,7 @@ export default function App() {
   const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, '')
     if (value.length == 9) {
+      //폼을 초과해서 작성 할 경우 되돌리기
       value = birth
     } else {
       if (value.length > 6) {
@@ -63,6 +67,7 @@ export default function App() {
         value = `${value.slice(0, 4)}`
       }
     }
+    //각각 제출 시 전달할 값, input에 value로 남을 값
     setValue('birth', value)
     setBirth(value)
   }

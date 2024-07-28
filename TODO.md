@@ -1,0 +1,12 @@
+- [ ] 스토리북
+  - foundation
+    - color palette (light, dark)
+    - typography
+    - shadow
+    - border radius
+  - logo
+  - button
+  - input
+  - color palette
+  - typography
+  - tabs

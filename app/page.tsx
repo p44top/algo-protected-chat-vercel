@@ -1,5 +1,6 @@
 import { ChatList } from "@/components/chat-list"
 import { Button } from "@/components/ui/button"
+import { Tab, Tabs } from "@/components/ui/tab"
 
 
 export const metadata = {
@@ -39,6 +40,13 @@ const ChatDemo = () => {
 export default async function IndexPage() {
   return (
     <div>
+      <Tabs name='tabs' defaultSelected='all'>
+        <Tab value='all'>전체</Tab>
+        <Tab value='1' >가족/지인</Tab>
+        <Tab value='2' >은행/카드사</Tab>
+        <Tab value='3' >범죄 연루</Tab>
+        <Tab value='4' >기타</Tab>
+      </Tabs>
       <div className="h-[calc(100vh_-_theme(spacing.56))] overflow-y-auto">
         <ChatDemo />
       </div>

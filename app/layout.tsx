@@ -1,12 +1,18 @@
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
-
 import '@/app/globals.css'
+import localFont from "next/font/local";
 import { cn } from '@/lib/utils'
 import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import { Toaster } from '@/components/ui/sonner'
+
+const pretendard = localFont({
+  src: "../public/fonts/PretendardVariable.woff2",
+  display: "swap",
+  weight: "45 920",
+  variable: "--font-pretendard",
+});
+
 
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
@@ -37,12 +43,10 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${pretendard.variable}`}>
       <body
         className={cn(
-          'font-sans antialiased',
-          GeistSans.variable,
-          GeistMono.variable
+          'font-pretendard antialiased',
         )}
       >
         <Toaster position="top-center" />

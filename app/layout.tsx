@@ -1,7 +1,6 @@
 import '@/app/globals.css'
 import localFont from "next/font/local";
 import { cn } from '@/lib/utils'
-import { TailwindIndicator } from '@/components/tailwind-indicator'
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import { Toaster } from '@/components/ui/sonner'
@@ -46,7 +45,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning className={`${pretendard.variable}`}>
       <body
         className={cn(
-          'font-pretendard antialiased',
+          'font-pretendard antialiased container max-w-lg px-0',
         )}
       >
         <Toaster position="top-center" />
@@ -60,7 +59,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <Header />
             <main className="flex flex-col flex-1 bg-muted/50">{children}</main>
           </div>
-          <TailwindIndicator />
         </Providers>
       </body>
     </html>

@@ -20,6 +20,19 @@ module.exports = {
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],
       },
+      fontSize: {
+        caption: ['13px', '15px'],
+        xs: ['14px', '19px'],
+        sm: ['15px', '19px'],
+        base: ['16px', '24px'],
+        md: ['17px', '24px'],
+        lg: ['18px', '24px'],
+        xl: ['20px', '20px'],
+        "display-xs": ['20px', '30px'],
+        "display-sm": ['22px', '28px'],
+        "display-base": ['24px', '32px'],
+        "display-lg": ['28px', '30px'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

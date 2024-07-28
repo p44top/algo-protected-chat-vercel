@@ -18,8 +18,20 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-geist-sans)'],
-        mono: ['var(--font-geist-mono)']
+        pretendard: ["var(--font-pretendard)"],
+      },
+      fontSize: {
+        caption: ['13px', '15px'],
+        xs: ['14px', '19px'],
+        sm: ['15px', '19px'],
+        base: ['16px', '24px'],
+        md: ['17px', '24px'],
+        lg: ['18px', '24px'],
+        xl: ['20px', '20px'],
+        "display-xs": ['20px', '30px'],
+        "display-sm": ['22px', '28px'],
+        "display-base": ['24px', '32px'],
+        "display-lg": ['28px', '30px'],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -54,7 +66,23 @@ module.exports = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
+        },
+        gray: {
+          100: '#fff',
+          200: '#f3f3f3',
+          300: '#eee',
+          400: '#dbdbdb',
+          500: '#ccc',
+          600: '#757575',
+          700: '#404040',
+          800: '#333',
+          900: '#222',
         }
+      },
+      boxShadow: {
+        'sm': '0 0px 3px var(--shadow-c)',
+        'md': '0 -2px 10px var(--shadow-c)',
+        'lg': '0 -2px 20px var(--shadow-c)',
       },
       borderRadius: {
         lg: 'var(--radius)',

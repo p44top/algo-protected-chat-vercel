@@ -58,7 +58,7 @@ export function Chat({ id, className, userInfo, missingKeys }: ChatProps) {
         ref={messagesRef}
       >
         {messages.length ? (
-          <ChatList messages={messages} isShared={false} />
+          <ChatList messages={messages} />
         ) : (
           <EmptyScreen />
         )}

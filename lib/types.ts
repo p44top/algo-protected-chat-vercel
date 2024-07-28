@@ -10,14 +10,13 @@ export interface Chat extends Record<string, any> {
   createdAt: Date
   path: string
   messages: Message[]
-  sharePath?: string
 }
 
 export type ServerActionResult<Result> = Promise<
   | Result
   | {
-      error: string
-    }
+    error: string
+  }
 >
 
 export interface UserInfo {

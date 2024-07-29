@@ -1,14 +1,9 @@
 'use client'
 
-import * as React from 'react'
+import React, { useRef, useEffect } from 'react'
 import Textarea from 'react-textarea-autosize'
 import { Button } from '@/components/ui/button'
-import { IconArrowElbow, IconPlus } from '@/components/ui/icons'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
+import { IconSend, IconHiint } from '@/components/ui/icons'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
 import { useRouter } from 'next/navigation'
 import type { UseChatHelpers } from 'ai/react'
@@ -23,9 +18,9 @@ export function PromptForm({
 }) {
   const router = useRouter()
   const { formRef, onKeyDown } = useEnterSubmit()
-  const inputRef = React.useRef<HTMLTextAreaElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus()
     }
@@ -44,52 +39,45 @@ export function PromptForm({
 
         const value = input.trim()
         setInput('')
-        await onSubmit(value);
+        // 테스트 하지 마세요. API 연결되어 있습니다.
+        // await onSubmit(value);
       }}
     >
-      <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden bg-background px-8 sm:rounded-md sm:border sm:px-12">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="absolute left-0 top-[14px] size-8 rounded-full bg-background p-0 sm:left-4"
-              onClick={() => {
-                router.push('/new')
-              }}
-            >
-              <IconPlus />
-              <span className="sr-only">New Chat</span>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>New Chat</TooltipContent>
-        </Tooltip>
-        <Textarea
-          ref={inputRef}
-          tabIndex={0}
-          onKeyDown={onKeyDown}
-          placeholder="Send a message."
-          className="min-h-[60px] w-full resize-none bg-transparent px-4 py-[1.3rem] focus-within:outline-none sm:text-sm"
-          autoFocus
-          spellCheck={false}
-          autoComplete="off"
-          autoCorrect="off"
-          name="message"
-          rows={1}
-          value={input}
-          onChange={e => setInput(e.target.value)}
-        />
-        <div className="absolute right-0 top-[13px] sm:right-4">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button type="submit" size="icon" disabled={isLoading || input === ''}>
-                <IconArrowElbow />
-                <span className="sr-only">Send message</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Send message</TooltipContent>
-          </Tooltip>
+      <div className="relative flex justify-center items-center gap-2 max-h-60 w-full grow overflow-hidden bg-background">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="size-8 rounded-full place-center bg-background hover:bg-muted/90 p-2"
+          onClick={() => {
+            console.log('show me hint')
+          }}
+        >
+          <IconHiint />
+          <span className="sr-only">Show Hint</span>
+        </Button>
+        <div className='flex justify-center items-center rounded-full bg-muted px-4 h-12 flex-1'>
+          <Textarea
+            ref={inputRef}
+            tabIndex={0}
+            onKeyDown={onKeyDown}
+            placeholder="메시지를 입력하세요."
+            className="size-full bg-transparent resize-none focus-within:outline-none text-sm text-muted-foreground"
+            autoFocus
+            spellCheck={false}
+            autoComplete="off"
+            autoCorrect="off"
+            name="message"
+            rows={1}
+            value={input}
+            onChange={e => setInput(e.target.value)}
+          />
+          <Button className="size-8 bg-transparent hover:bg-transparent p-0 cursor-pointer"
+            type="submit" size="icon" variant='ghost' disabled={isLoading || input.trim() === ''}>
+            <IconSend className={isLoading || input.trim() === '' ? '' : 'text-primary'} />
+            <span className="sr-only">Send message</span>
+          </Button>
         </div>
+
       </div>
     </form>
   )

@@ -16,7 +16,6 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 
 export type handleSubmitType = UseChatHelpers['handleSubmit']
 export function Chat({ id, initialMessages = [], className }: ChatProps) {
-  const router = useRouter();
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
     'ai-token',
     null
@@ -40,11 +39,11 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
 
   return (
     <div
-      className="group w-full overflow-auto pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]"
+      className="group w-full overflow-y-auto overflow-x-hidden scrollbar-hide pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]"
       ref={scrollRef}
     >
       <div
-        className={cn('pb-[200px] pt-4 md:pt-10', className)}
+        className={cn('pb-[120px] pt-0', className)}
         ref={messagesRef}
       >
         {messages?.length > 0 && <ChatList messages={messages} />}

@@ -1,4 +1,7 @@
-import { IconArrowRight, IconUser } from "./ui/icons";
+'use client'
+
+import { useRouter } from "next/navigation";
+import { IconUser } from "./ui/icons";
 
 interface PreviewChatProps {
     id: string;
@@ -11,7 +14,12 @@ interface PreviewChatProps {
 
 // TODO: click하면 id chat으로 이동
 export const PreviewChat = ({ id, thumbnail, title, info, badge = 0 }: PreviewChatProps) => {
-    return <div className="w-full flex bg-background cursor-pointer">
+    const router = useRouter()
+    return <div className="w-full flex cursor-pointer" onClick={
+        () => {
+            router.push(`/chat/${id}`)
+        }
+    }>
         <div className="flex place-items-center pl-4">
             <div className="w-12 h-12 rounded-full overflow-hidden bg-muted">
                 {thumbnail ? <img src={thumbnail} alt={`${title} thumbnail`} className="w-full h-full object-cover" /> : <IconUser className="p-3 text-muted-foreground w-full h-full" />}

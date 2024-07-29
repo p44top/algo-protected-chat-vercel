@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
@@ -85,6 +87,7 @@ module.exports = {
         'lg': '0 -2px 20px var(--shadow-c)',
       },
       borderRadius: {
+        '2xl': '32px',
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
@@ -105,5 +108,34 @@ module.exports = {
       }
     }
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')]
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography'), plugin(function ({ addUtilities }: any) {
+    // hide scrollbar https://github.com/reslear/tailwind-scrollbar-hide/blob/main/src/index.js
+    addUtilities({
+      '.scrollbar-hide': {
+        /* IE and Edge */
+        '-ms-overflow-style': 'none',
+
+        /* Firefox */
+        'scrollbar-width': 'none',
+
+        /* Safari and Chrome */
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        }
+      },
+
+      '.scrollbar-default': {
+        /* IE and Edge */
+        '-ms-overflow-style': 'auto',
+
+        /* Firefox */
+        'scrollbar-width': 'auto',
+
+        /* Safari and Chrome */
+        '&::-webkit-scrollbar': {
+          display: 'block'
+        }
+      }
+    }, ['responsive'])
+  })]
 }

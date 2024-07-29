@@ -3,48 +3,38 @@
 import { cn } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
-import { EmptyScreen } from '@/components/empty-screen'
-import { useLocalStorage } from '@/lib/hooks/use-local-storage'
-import { useEffect, useState } from 'react'
-import { useUIState, useAIState } from 'ai/rsc'
-import { Message, UserInfo } from '@/lib/types'
-import { usePathname, useRouter } from 'next/navigation'
+import { Message } from '@/lib/types'
+import { useRouter } from 'next/navigation'
 import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
-import { toast } from 'sonner'
+import { useChat, UseChatHelpers } from 'ai/react'
+import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
   id?: string
-  userInfo?: UserInfo
-  missingKeys: string[]
 }
 
-export function Chat({ id, className, userInfo, missingKeys }: ChatProps) {
-  const router = useRouter()
-  const path = usePathname()
-  const [input, setInput] = useState('')
-  const [messages] = useUIState()
-  const [aiState] = useAIState()
-
-  const [_, setNewChatId] = useLocalStorage('newChatId', id)
-
-  useEffect(() => {
-    const messagesLength = aiState.messages?.length
-    if (messagesLength === 2) {
-      router.refresh()
-    }
-  }, [aiState.messages, router])
-
-  useEffect(() => {
-    setNewChatId(id)
-  })
-
-  useEffect(() => {
-    missingKeys.map(key => {
-      toast.error(`Missing ${key} environment variable!`)
+export type handleSubmitType = UseChatHelpers['handleSubmit']
+export function Chat({ id, initialMessages = [], className }: ChatProps) {
+  const router = useRouter();
+  const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
+    'ai-token',
+    null
+  )
+  const { messages, append, reload, stop, isLoading, input, setInput } =
+    useChat({
+      initialMessages,
+      id,
+      body: {
+        id,
+        previewToken
+      },
+      onResponse(response) {
+        if (response.status === 401) {
+          console.error(response.statusText)
+        }
+      }
     })
-  }, [missingKeys])
-
   const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } =
     useScrollAnchor()
 
@@ -57,19 +47,17 @@ export function Chat({ id, className, userInfo, missingKeys }: ChatProps) {
         className={cn('pb-[200px] pt-4 md:pt-10', className)}
         ref={messagesRef}
       >
-        {messages.length ? (
-          <ChatList messages={messages} />
-        ) : (
-          <EmptyScreen />
-        )}
+        {messages?.length > 0 && <ChatList messages={messages} />}
         <div className="w-full h-px" ref={visibilityRef} />
       </div>
       <ChatPanel
         id={id}
+        isLoading={isLoading}
         input={input}
         setInput={setInput}
         isAtBottom={isAtBottom}
         scrollToBottom={scrollToBottom}
+        append={append}
       />
     </div>
   )

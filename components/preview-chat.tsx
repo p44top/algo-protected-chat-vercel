@@ -17,7 +17,7 @@ export const PreviewChat = ({ id, thumbnail, title, info, badge = 0 }: PreviewCh
     const router = useRouter()
     return <div className="w-full flex cursor-pointer" onClick={
         () => {
-            router.push(`/chat/${id}`)
+            router.push(`/${id}`)
         }
     }>
         <div className="flex place-items-center pl-4">

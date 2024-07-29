@@ -11,16 +11,17 @@ export interface ChatPageProps {
 }
 
 export default async function ChatPage({ params }: ChatPageProps) {
-  const missingKeys = await getMissingKeys()
-  const chat = await getChat(params.id)
+  return <div>봇 채팅방 {params.id}</div>
+  // const missingKeys = await getMissingKeys()
+  // const chat = await getChat(params.id)
 
-  return (
-    <AI initialAIState={{ chatId: chat.id, messages: chat.messages }}>
-      <Chat
-        id={chat.id}
-        initialMessages={chat.messages}
-        missingKeys={missingKeys}
-      />
-    </AI>
-  )
+  // return (
+  //   <AI initialAIState={{ chatId: chat.id, messages: chat.messages }}>
+  //     <Chat
+  //       id={chat.id}
+  //       initialMessages={chat.messages}
+  //       missingKeys={missingKeys}
+  //     />
+  //   </AI>
+  // )
 }

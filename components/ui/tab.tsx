@@ -30,6 +30,7 @@ export interface TabsProps
   asChild?: boolean
   name: string;
   defaultSelected: string;
+  onSelected?: (name: string, selected: string) => void;
 }
 export interface TabProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -37,13 +38,13 @@ export interface TabProps
   value: string;
 }
 
-const TabsContext = React.createContext({ name: '', defaultSelected: '' });
+const TabsContext = React.createContext({ name: '', defaultSelected: '', onSelected: (name: string, select: string) => { } });
 // TODO: onchange 이벤트 추가 필요
 const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
-  ({ className, name, defaultSelected, asChild = false, ...props }, ref) => {
+  ({ className, name, defaultSelected, onSelected = () => { }, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'div'
     return (
-      <TabsContext.Provider value={{ name, defaultSelected }}>
+      <TabsContext.Provider value={{ name, defaultSelected, onSelected }}>
         <Comp
           className={cn(className = "flex gap-2 px-2 py-2 pb-3 w-full overflow-x-auto scrollbar-hide bg-primary", className)}
           ref={ref}
@@ -56,12 +57,12 @@ const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
 )
 const Tab = React.forwardRef<HTMLDivElement, TabProps>(
   ({ className, value, asChild = false, ...props }, ref) => {
-    const inputRef = React.useRef<HTMLInputElement>(null);
     const context = React.useContext(TabsContext)
     const Comp = asChild ? Slot : 'div'
+    if (!context) throw 'Tab need parent "Tabs"';
     return (
       <label>
-        <input ref={inputRef} type='radio' name={context.name} value={value} className='peer sr-only' defaultChecked={context.defaultSelected === value} />
+        <input onChange={() => context.onSelected(context.name, value)} type='radio' name={context.name} value={value} className='peer sr-only' defaultChecked={context.defaultSelected === value} />
         <Comp
           className={cn(tabVariants({ state: 'default', size: 'default', className }))}
           ref={ref}

@@ -1,28 +1,24 @@
 import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { Configuration, OpenAIApi } from 'openai-edge';
+import { Configuration, OpenAIApi } from 'openai-edge'
 import { nanoid } from '@/lib/utils'
 
 export const runtime = 'edge'
 
 const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: process.env.OPENAI_API_KEY,
 })
 
 const openai = new OpenAIApi(configuration)
 
 export async function POST(req: Request) {
     const json = await req.json()
-    const { messages, previewToken } = json
-
-    if (previewToken) {
-        configuration.apiKey = previewToken
-    }
+    const { messages, category } = json
 
     const res = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages,
         temperature: 0.7,
-        stream: true
+        stream: true,
     })
 
     const stream = OpenAIStream(res, {
@@ -40,12 +36,12 @@ export async function POST(req: Request) {
                     ...messages,
                     {
                         content: completion,
-                        role: 'assistant'
-                    }
-                ]
+                        role: 'assistant',
+                    },
+                ],
             }
             console.log(payload)
-        }
+        },
     })
 
     return new StreamingTextResponse(stream)

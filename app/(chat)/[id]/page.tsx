@@ -1,7 +1,5 @@
 
-
-import { getChat } from '@/app/actions'
-import { Chat } from '@/components/chat'
+import { ChatPageUsingStore } from '@/components/chat-page'
 
 export interface ChatPageProps {
   params: {
@@ -10,9 +8,5 @@ export interface ChatPageProps {
 }
 
 export default async function ChatPage({ params }: ChatPageProps) {
-  const chat = await getChat(params.id)
-  return <>
-    <header className='h-[78px] flex w-full bg-muted justify-center items-center'>chat header</header>
-    <Chat id={chat.id} initialMessages={chat.messages} />
-  </>
+  return <ChatPageUsingStore id={params.id} />
 }

@@ -5,6 +5,11 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import 'react-toastify/dist/ReactToastify.css'
 import { useRef, useState } from 'react'
+import revertImage from './png/revertImage.png'
+import linkImage from '../splash/png/linkButton.png'
+import style from './formStyle.module.css'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const schema = z.object({
   //이름, 생년월일 검증을 위한 스키마
@@ -29,7 +34,8 @@ type IFormInput = z.infer<typeof schema>
 
 export default function App() {
   const birthRef = useRef<HTMLInputElement>(null)
-  const [birth, setBirth] = useState('')
+  const [birth, setBirth] = useState<string>('')
+
   const {
     register,
     handleSubmit,
@@ -73,37 +79,53 @@ export default function App() {
   }
 
   return (
-    <>
-      <h1>
+    <div className={`${style.box}`}>
+      <Link href="/splash">
+        <Image
+          src={revertImage}
+          alt="revertImage"
+          className={`${style.revert}`}
+        ></Image>
+      </Link>
+      <h1 className={`${style.title}`}>
         사용자의 정보를<br></br>
         입력해 주세요.
       </h1>
-      <p>정보를 입력하면 맞춤형 시나리오를 제공해요!</p>
+      <p className={`${style.description}`}>
+        정보를 입력하면 맞춤형 시나리오를 제공해요!
+      </p>
       <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <div>
-          <label>이름</label>
-          <input {...register('name')} />
+        <div className={`${style.name}`}>
+          <label className={`${style.label}`}>이름</label>
+          <input {...register('name')} className={`${style.input}`} />
         </div>
-        <div>
-          <label>생년월일</label>
+        <div className={`${style.birth}`}>
+          <label className={`${style.label}`}>생년월일</label>
           <input
+            className={`${style.input}`}
             {...register('birth')}
             ref={birthRef}
             onChange={handleBirthChange}
             value={birth}
           />
         </div>
-        <div>
-          <label>성별</label>
-          <select {...register('gender')}>
+        <div className={`${style.gender}`}>
+          <label className={`${style.label}`}>성별</label>
+          <select {...register('gender')} className={`${style.select}`}>
             <option value="여성">여성</option>
             <option value="남성">남성</option>
             <option value="이외">이외</option>
           </select>
         </div>
-        <button type="submit">시작하기</button>
+        <button type="submit" className={`${style.start}`}>
+          <Image
+            src={linkImage}
+            alt="linkImage"
+            className={`${style.linkImage}`}
+          ></Image>
+        </button>
       </form>
       <ToastContainer></ToastContainer>
-    </>
+    </div>
   )
 }

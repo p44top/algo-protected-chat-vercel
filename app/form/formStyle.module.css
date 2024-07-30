@@ -1,0 +1,213 @@
+.box {
+  width: 400px;
+  height: 750px;
+  display: flex;
+  flex-direction: column;
+}
+.revert {
+  /* top navigetion */
+  display: flex;
+  width: 393px;
+  height: 60px;
+  color: black;
+}
+
+.title {
+  /* 사용자의 정보를 입력해 주세요. */
+  width: 250px;
+  height: 66px;
+  margin-left: 10px;
+  margin-top: 8px;
+  /* display */
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33px;
+
+  /* GreyScale/Black */
+  color: #222222;
+}
+
+.description {
+  /* 정보를 입력하면 맞춤형 시나리오를 제공해요! */
+
+  width: 350px;
+  height: 24px;
+  margin-left: 10px;
+  margin-top: 30px;
+
+  /* base */
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  /* identical to box height, or 150% */
+
+  /* GreyScale/Grey 4 */
+  color: #757575;
+}
+
+.label {
+  /* form_label */
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  /* identical to box height, or 136% */
+
+  color: #404040;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+  margin-top: 16px;
+  margin-left: 2px;
+}
+.name {
+  /* Frame 40457 */
+  margin-top: 16px;
+  margin-left: 10px;
+  /* Auto layout */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 361px;
+  height: 62px;
+}
+
+.birth {
+  /* Frame 40458 */
+  margin-top: 16px;
+  margin-left: 10px;
+  /* Auto layout */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 361px;
+  height: 62px;
+}
+.gender {
+  /* Frame 40459 */
+  margin-top: 16px;
+  margin-left: 10px;
+  /* Auto layout */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+
+  width: 361px;
+  height: 62px;
+}
+
+.input {
+  caret-color: #1189fc;
+  box-sizing: border-box;
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 0px;
+  gap: 8px;
+
+  width: 361px;
+  height: 43px;
+
+  border-bottom: 1px solid #dbdbdb;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+  outline: none;
+  /* 1982.10.11 */
+
+  /* form_input */
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 550;
+  font-size: 20px;
+  line-height: 19px;
+  /* identical to box height, or 95% */
+
+  /* overlay_black */
+  color: rgba(0, 0, 0, 0.8);
+}
+.input:focus {
+  border-bottom: 2px solid #1189fc;
+}
+
+.select {
+  box-sizing: border-box;
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 0px;
+  gap: 8px;
+
+  width: 361px;
+  height: 60px;
+
+  border-bottom: 1px solid #dbdbdb;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+  outline: none;
+  /* 1982.10.11 */
+
+  /* form_input */
+  font-family: 'Pretendard';
+  font-style: normal;
+  font-weight: 550;
+  font-size: 20px;
+  line-height: 19px;
+  /* identical to box height, or 95% */
+
+  /* overlay_black */
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.select:focus {
+  border-bottom: 2px solid #1189fc;
+}
+
+.linkImage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px 16px;
+  gap: 8px;
+
+  position: absolute;
+  width: 393px;
+  height: 52px;
+  left: calc(47.4% - 393px / 2);
+  top: 850px;
+
+  animation-name: fadeOut;
+  animation-duration: 2s;
+}
+@keyframes fadeOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

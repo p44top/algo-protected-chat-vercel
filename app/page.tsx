@@ -1,6 +1,5 @@
 import { ChatList } from "@/components/chat-list"
 import { PreviewChat } from "@/components/preview-chat"
-import { Button } from "@/components/ui/button"
 import { Tab, Tabs } from "@/components/ui/tab"
 
 

@@ -5,10 +5,12 @@ import { ChatProfileHeader } from './chat-profile-header'
 import { Chat } from './chat'
 import { getChat } from '@/app/actions'
 import type { Chat as ChatType } from '@/lib/types'
+import { useInsert } from '@/app/(chat)/[id]/action'
 
 export const ChatPageUsingStore = ({ id }: { id: string }) => {
     const [chatInfo, setChatInfo] = useState<ChatType>()
 
+    useInsert()
     useEffect(() => {
         const chat = getChat(id)
         if (chat) {

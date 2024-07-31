@@ -33,6 +33,7 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
                 // TODO: storage에 저장히기
             }
         },
+        api: '',
     })
     const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } = useScrollAnchor()
 
@@ -80,11 +81,11 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
             ref={scrollRef}
         >
             <div className={cn('pb-[120px] pt-0', className)} ref={messagesRef}>
-                {filteredMessages?.length > 0 && <ChatList messages={filteredMessages} />}
+                {filteredMessages?.length > 0 && <ChatList id={id} messages={filteredMessages} />}
                 <div className="w-full h-px" ref={visibilityRef} />
             </div>
             <ChatPanel
-                isFinished={FeedBack ? true : false}
+                id={id}
                 isLoading={isLoading}
                 input={input}
                 setInput={setInput}

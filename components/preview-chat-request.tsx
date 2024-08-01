@@ -6,6 +6,7 @@ import { PreviewChat } from './preview-chat'
 import { nanoid } from '@/lib/utils'
 import { Profile, UserInfo } from '@/lib/types'
 import { getContent, getName } from '@/lib/chat-api/parse'
+import { getRandomProfile } from '@/lib/chat-api/getProfile'
 
 const LoadingAndRequest = ({ append }: Pick<UseChatHelpers, 'append'>) => {
   const first = useRef(false)

@@ -5,7 +5,7 @@ const profileDir: Record<string, string[]> = {
   '4': [1, 2, 3, 4].map(val => `/profile/extra/${val}.png`)
 }
 
-const getRandomProfile = (category: string) => {
+export const getRandomProfile = (category: string) => {
   const list = profileDir[category] || profileDir['4']
   const randomIdx = Math.floor(Math.random() * list.length)
   return list[randomIdx]

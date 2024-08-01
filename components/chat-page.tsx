@@ -16,11 +16,6 @@ export const ChatPageUsingStore = ({ id }: { id: string }) => {
   useInsert()
   const user = useAuth()
   useEffect(() => {
-    // This hides the address bar:
-    setTimeout(function () {
-      window.scrollTo(0, 1)
-    }, 0)
-
     const chat = getChat(id)
     if (chat?.id) {
       setChatInfo(chat)

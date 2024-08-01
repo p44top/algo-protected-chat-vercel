@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -9,23 +9,23 @@
 
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
- 
+
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
- 
+
     --primary: 203 100% 33%;
     --primary-foreground: 0 0% 98%;
- 
+
     --secondary: 203 84% 17%;
     --secondary-dark: 203 84% 5%;
     --secondary-foreground: 0 0% 100%;
- 
+
     --muted: 0 0% 95%;
     --muted-foreground: 0 0% 25%;
- 
+
     --accent: 203 100% 46%;
-    --accent-foreground:0 0% 100%;
- 
+    --accent-foreground: 0 0% 100%;
+
     --destructive: 18 100% 49%;
     --destructive-foreground: 0 0% 99%;
 
@@ -33,43 +33,45 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
- 
+
     --radius: 12px;
   }
- 
+
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
- 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
- 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
- 
-    --primary: 203 100% 44%;
-    --primary-foreground: 0 0% 14%;
- 
-    --secondary: 203 50% 39%;
-    --secondary-dark: 203 84% 17%;
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 203 100% 33%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 203 84% 17%;
+    --secondary-dark: 203 84% 5%;
     --secondary-foreground: 0 0% 100%;
- 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
- 
-    --accent: 203 100% 50%;
-    --accent-foreground:0 0% 100%;
- 
+
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 25%;
+
+    --accent: 203 100% 46%;
+    --accent-foreground: 0 0% 100%;
+
     --destructive: 18 100% 49%;
-    --destructive-foreground: 0 0% 2%;
- 
-    --shadow-c: rgba(255, 255, 255, 0.2);
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --destructive-foreground: 0 0% 99%;
+
+    --shadow-c: rgba(0, 0, 0, 0.18);
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 12px;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;

@@ -58,7 +58,7 @@ export default function App() {
       <Link href="/splash" className="w-full py-2">
         <Image src={revertImage} alt="revertImage"></Image>
       </Link>
-      <div className="flex flex-col gap-[30px] px-4">
+      <div className="w-full flex flex-col gap-[30px] px-4">
         <h1 className="self-start not-italic font-bold text-display-lg leading-8 ">
           사용자의 정보를<br></br>
           입력해 주세요.

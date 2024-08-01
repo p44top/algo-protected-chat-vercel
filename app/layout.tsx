@@ -1,23 +1,22 @@
 import '@/app/globals.css'
-import localFont from "next/font/local";
+import localFont from 'next/font/local'
 import { cn } from '@/lib/utils'
 import { Providers } from '@/components/providers'
 import { Toaster } from '@/components/ui/sonner'
 
 const pretendard = localFont({
-  src: "../public/fonts/PretendardVariable.woff2",
-  display: "swap",
-  weight: "45 920",
-  variable: "--font-pretendard",
-});
-
+  src: '../public/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  variable: '--font-pretendard'
+})
 
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
     ? new URL(`https://${process.env.VERCEL_URL}`)
     : undefined,
   title: {
-    default: 'Next.js AI Chatbot',
+    default: 'Algo Chatbot',
     template: `%s - Next.js AI Chatbot`
   },
   description: 'An AI-powered chatbot template built with Next.js and Vercel.',
@@ -41,11 +40,13 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${pretendard.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${pretendard.variable}`}
+    >
       <body
-        className={cn(
-          'font-pretendard antialiased container max-w-lg px-0',
-        )}
+        className={cn('font-pretendard antialiased container max-w-lg px-0')}
       >
         <Toaster position="top-center" />
         <Providers
@@ -55,7 +56,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           disableTransitionOnChange
         >
           <div className="min-h-screen">
-            <main className="flex flex-col flex-1 bg-background">{children}</main>
+            <main className="flex flex-col flex-1 bg-background">
+              {children}
+            </main>
           </div>
         </Providers>
       </body>

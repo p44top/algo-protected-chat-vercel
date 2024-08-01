@@ -39,9 +39,12 @@ const CategoryStore = create<CategoryStoreType>((set) => ({
 export const useCategoryListen = () => {
     const update = useStore(CategoryStore, (state) => state.changeCategory)
 
-    const onChange = useCallback((name: string, category: string) => {
-        update(category as category)
-    }, [])
+    const onChange = useCallback(
+        (name: string, category: string) => {
+            update(category as category)
+        },
+        [update],
+    )
 
     return onChange
 }

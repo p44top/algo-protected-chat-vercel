@@ -18,7 +18,7 @@ export const ChatPageUsingStore = ({ id }: { id: string }) => {
         } else {
             // TODO: chat 정보가 없음. id가 invalid함. list로 리다이렉트
         }
-    }, [])
+    }, [id])
 
     if (!chatInfo) return <></>
     return (

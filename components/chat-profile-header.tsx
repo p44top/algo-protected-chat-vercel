@@ -3,8 +3,6 @@
 import { Button } from './ui/button'
 import { IconBack } from './ui/icons'
 import { Profile } from './ui/profile'
-import { useEffect, useState } from 'react'
-import { getChatBotProfile } from '@/app/actions'
 import { useGoBack } from '@/lib/hooks/use-go-back'
 import { useChatBotProfile } from './chat-profile-hook'
 
@@ -15,7 +13,7 @@ export interface ChatProfileHeaderProps {
 const Loading = () => {
     return (
         <div className="animate-pulse flex flex-col gap-1">
-            <div className="rounded-full bg-slate-200 h-10 w-10"></div>
+            <div className="rounded-full bg-slate-200 size-10"></div>
             <div className="h-2 bg-slate-200 rounded"></div>
         </div>
     )

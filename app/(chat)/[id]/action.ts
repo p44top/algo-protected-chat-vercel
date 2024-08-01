@@ -50,7 +50,7 @@ export const useInsert = () => {
     const reset = useStore(ChatStore, (state) => state.reset)
     useEffect(() => {
         reset()
-    }, [])
+    }, [reset])
 }
 
 export const useControlFeedBack = () => {

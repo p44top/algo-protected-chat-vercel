@@ -17,11 +17,11 @@ export function ChatList({ id, messages }: ChatList) {
         if (messages.length > 20) {
             done()
         }
-    }, [messages])
+    }, [messages, done])
 
     if (!messages.length) return <></>
     return (
-        <div className="relative px-4 py-4 flex gap-4 flex-col">
+        <div className="relative p-4 flex gap-4 flex-col">
             {messages.map((message, index) => (
                 <div key={index}>
                     <ChatMessage message={message} />

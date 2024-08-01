@@ -24,7 +24,7 @@ export const PreviewChat = ({ id, thumbnail, title, info, badge = 0 }: PreviewCh
             <div className="flex place-items-center pl-4">
                 <Profile name={title} thumbnail={thumbnail} />
             </div>
-            <div className="flex-1 p-4 flex flex-col gap-3 border-b-[1px] border-border pr-4">
+            <div className="flex-1 p-4 flex flex-col gap-3 border-b border-border">
                 <div className="w-full flex justify-between">
                     <h4 className="text-lg font-semibold text-foreground">{title}</h4>
                     <svg xmlns="http://www.w3.org/2000/svg" width="7" height="13" viewBox="0 0 7 13" fill="none">

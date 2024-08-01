@@ -1,73 +1,150 @@
-import Image from 'next/image'
-import style from './splashImg.module.css'
-import firstImage from './png/firstImage.png'
-import secondImage from './png/secondImage.png'
-import thirdImage from './png/thirdImage.png'
-import firstDot from './png/firstDot.png'
-import secondDot from './png/secondDot.png'
-import thirdDot from './png/thirdDot.png'
-import linkButton from './png/linkButton.png'
-import Link from 'next/link'
+'use client'
 
-export default function SplashPage() {
-  return (
-    <>
-      <div className={`${style.slide}`}>
-        <div className={`${style.wrapper}`}>
-          <Image
-            src={firstDot}
-            alt="firstDot"
-            className={`${style.dot}`}
-          ></Image>
-          <h2 className={`${style.text}`}>
-            실제 사례를 학습하여 <br></br>
-            <b>피싱 피해를 방지해요</b>
-          </h2>
-          <Image
-            src={firstImage}
-            alt="first"
-            className={`${style.image}`}
-          ></Image>
-        </div>
-        <div className={`${style.wrapper}`}>
-          <Image
-            src={secondDot}
-            alt="secondDot"
-            className={`${style.dot}`}
-          ></Image>
-          <h2 className={`${style.text}`}>
-            AI로 실전 피싱 대응을 <br></br>
-            <b>연습할 수 있어요</b>
-          </h2>
-          <Image
-            src={secondImage}
-            alt="second"
-            className={`${style.image}`}
-          ></Image>
-        </div>
-        <div className={`${style.wrapper}`}>
-          <Image
-            src={thirdDot}
-            alt="thirdDot"
-            className={`${style.dot}`}
-          ></Image>
-          <h2 className={`${style.text}`}>
-            AI 피드백으로 피싱<br></br> <b>대응 능력을 향상시켜요</b>
-          </h2>
-          <Image
-            src={thirdImage}
-            alt="third"
-            className={`${style.image}`}
-          ></Image>
-          <Link href="/form">
-            <Image
-              src={linkButton}
-              alt="linkButton"
-              className={`${style.link}`}
-            ></Image>
-          </Link>
-        </div>
-      </div>
-    </>
-  )
+import { AnimatePresence, motion } from 'framer-motion'
+import { images } from './images'
+import { useState } from 'react'
+import LinkButton from './linkButton'
+
+const variants = {
+    entry: (back: boolean) => ({
+        x: back ? -500 : 500,
+        opacity: 0,
+        scale: 0,
+    }),
+    center: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: { duration: 0.5 },
+    },
+    exit: (back: boolean) => ({
+        x: back ? 500 : -500,
+        opacity: 0,
+        scale: 0,
+        transition: { duration: 0.5 },
+    }),
 }
+
+const wrap = (min_val: number, max_val: number, value: number) => {
+    const range_size = max_val - min_val
+    return (((value - min_val) % range_size) + min_val) % range_size
+}
+
+const swipeConfidenceThreshold = 10000
+const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity
+}
+
+const SplashPage = () => {
+    const [[page, direction], setPage] = useState([0, 0])
+    //박스마다 이미지 적용
+    const imageIndex = wrap(0, images.length, page)
+
+    const paginate = (newDirection: number) => {
+        if (page === 0 && newDirection === -1) {
+            return
+        }
+        setPage([page + newDirection, newDirection])
+    }
+    const handleClick = (n: number) => {
+        setPage([n, 0])
+    }
+
+    return (
+        <>
+            <div className="flex flex-row items-center justify-center">
+                <svg
+                    width="18"
+                    height="80"
+                    onClick={() => {
+                        handleClick(0)
+                    }}
+                >
+                    <circle
+                        cx="5"
+                        cy="40"
+                        r="5"
+                        className={`${wrap(0, images.length, page) === 0 ? 'fill-red-500' : 'fill-black'}`}
+                    ></circle>
+                </svg>
+                <svg
+                    width="18"
+                    height="80"
+                    onClick={() => {
+                        handleClick(1)
+                    }}
+                >
+                    <circle
+                        cx="5"
+                        cy="40"
+                        r="5"
+                        className={`${wrap(0, images.length, page) === 1 ? 'fill-red-500' : 'fill-black'}`}
+                    ></circle>
+                </svg>
+                <svg
+                    width="18"
+                    height="80"
+                    onClick={() => {
+                        handleClick(2)
+                    }}
+                >
+                    <circle
+                        cx="5"
+                        cy="40"
+                        r="5"
+                        className={`${wrap(0, images.length, page) === 2 ? 'fill-red-500' : 'fill-black'}`}
+                    ></circle>
+                </svg>
+            </div>
+
+            <AnimatePresence initial={false} custom={direction}>
+                <motion.div className="flex flex-col justify-center items-center overflow-hidden">
+                    <motion.div
+                        className="flex flex-col not-italic font-normal text-2xl leading-8"
+                        custom={direction}
+                        variants={variants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{
+                            x: { type: 'spring', stiffness: 300, damping: 30 },
+                            opacity: { duration: 0.2 },
+                        }}
+                    >
+                        {`${images[imageIndex].f_description}`}
+                        <br></br>
+                        <b>{`${images[imageIndex].s_description}`}</b>
+                    </motion.div>
+                    <motion.img
+                        key={imageIndex}
+                        src={`${images[imageIndex].src}`}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        className="mt-4 w-96 ml-13"
+                        transition={{
+                            x: { type: 'spring', stiffness: 300, damping: 30 },
+                            opacity: { duration: 0.2 },
+                        }}
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={1}
+                        onDragEnd={(e, { offset, velocity }) => {
+                            const swipe = swipePower(offset.x, velocity.x)
+                            if (swipe < -swipeConfidenceThreshold) {
+                                paginate(1)
+                            } else if (swipe > swipeConfidenceThreshold) {
+                                paginate(-1)
+                            }
+                        }}
+                    />
+                </motion.div>
+            </AnimatePresence>
+            <div className="ml-16">
+                <LinkButton></LinkButton>
+            </div>
+        </>
+    )
+}
+
+export default SplashPage

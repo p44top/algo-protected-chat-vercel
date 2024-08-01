@@ -1,16 +1,17 @@
 'use client'
 
-import { cn } from '@/lib/utils'
+import { cn, nanoid } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
 import { Message } from '@/lib/types'
 import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
 import { useChat, UseChatHelpers } from 'ai/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getCategory } from '@/app/actions'
 import { ChatHint } from './chat-hint'
 import { ChatDone } from './chat-done'
 import { useDone } from '@/app/(chat)/[id]/action'
+import { ChatFeedBack } from './chat-feedback'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
@@ -52,6 +53,10 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
 
   useEffect(() => {
     const category = getCategory(id)
+    if (category === -1) {
+      // 해당 id의 카테고리가 없음.
+      return
+    }
     setCategory(category)
   }, [id])
 
@@ -95,6 +100,21 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
     return FeedBack
   }, [messages])
 
+  const forcedFinished = useMemo(() => {
+    messages.findLast(({ role, content }) => {
+      if (role !== 'system') return false
+      return content.includes('강제 종료')
+    })
+  }, [messages])
+
+  const onExit = useCallback(async () => {
+    await append({
+      id: nanoid(),
+      content: '상황극 종료',
+      role: 'user'
+    })
+  }, [append])
+
   return (
     <div
       className="group w-full overflow-y-auto overflow-x-hidden scrollbar-hide pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]"
@@ -102,7 +122,7 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
     >
       <div className={cn('pb-[120px] pt-0', className)} ref={messagesRef}>
         {filteredMessages?.length > 0 && (
-          <ChatList id={id} messages={filteredMessages} />
+          <ChatList messages={filteredMessages} onExit={onExit} />
         )}
         <div className="w-full h-px" ref={visibilityRef} />
       </div>
@@ -128,6 +148,7 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
           isVisible={FeedBack?.content ? true : false}
         />
       )}
+      <ChatFeedBack id={id} feedback={FeedBack} isDone={isDone} />
     </div>
   )
 }

@@ -57,7 +57,7 @@ const SplashPage = () => {
   }
 
   return (
-    <div className="size-full overflow-y-hidden">
+    <div className="relative w-full h-screen overflow-y-hidden">
       <div className="flex flex-row items-center justify-center">
         <svg
           width="18"
@@ -107,7 +107,7 @@ const SplashPage = () => {
         <br></br>
         <b>{`${images[imageIndex].s_description}`}</b>
       </div>
-      <div className="absolute w-full bottom-0 overflow-hidden">
+      <div className="absolute w-4/5 -bottom-2/5 left-1/2 -translate-x-1/2 overflow-hidden">
         <AnimatePresence initial={false} custom={direction} mode={'wait'}>
           <motion.img
             key={page}

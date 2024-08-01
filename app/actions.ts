@@ -116,11 +116,12 @@ const setChatsStore = (id: string, messages: Message[]) => {
 
 // TODO: 유저 정보 사용
 export const getUserInfo = () => {
-  return {
+  const dummy: UserInfo = {
     name: '한알고',
     age: 24,
     gender: 'female'
   }
+  return dummy
   return getUserStore()
 }
 

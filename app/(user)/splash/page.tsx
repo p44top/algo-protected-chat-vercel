@@ -57,7 +57,7 @@ const SplashPage = () => {
   }
 
   return (
-    <>
+    <div className="size-full overflow-y-hidden">
       <div className="flex flex-row items-center justify-center">
         <svg
           width="18"
@@ -102,21 +102,18 @@ const SplashPage = () => {
           ></circle>
         </svg>
       </div>
-      <div className="flex flex-col not-italic font-normal text-2xl leading-8 ml-40">
+      <div className="flex flex-col not-italic font-normal text-2xl leading-8 text-center">
         {`${images[imageIndex].f_description}`}
         <br></br>
         <b>{`${images[imageIndex].s_description}`}</b>
       </div>
-      <div className="overflow-hidden">
+      <div className="absolute w-full bottom-0 overflow-hidden">
         <AnimatePresence initial={false} custom={direction} mode={'wait'}>
           <motion.img
-            width="384"
-            height="616"
             key={page}
             src={images[imageIndex].src}
             custom={direction}
             variants={variants}
-            className="w-96 ml-16 rounded-md"
             initial="entry"
             animate="center"
             exit="exit"
@@ -139,11 +136,11 @@ const SplashPage = () => {
             }}
           />
         </AnimatePresence>
-        <div className="ml-16 z-10 fixed">
-          <LinkButton></LinkButton>
-        </div>
       </div>
-    </>
+      <div className="z-10 fixed bottom-3 left-1/2 -translate-x-1/2">
+        <LinkButton></LinkButton>
+      </div>
+    </div>
   )
 }
 

@@ -54,61 +54,67 @@ export default function App() {
     }
   }
   return (
-    <div className="flex flex-col  justify-center items-center">
-      <Link href="/splash" className="ml-12">
+    <div className="relative flex flex-col  justify-center items-center overflow-hidden">
+      <Link href="/splash" className="w-full py-2">
         <Image src={revertImage} alt="revertImage"></Image>
       </Link>
-      <h1 className="self-start ml-16 not-italic font-bold text-display-lg leading-8 ">
-        사용자의 정보를<br></br>
-        입력해 주세요.
-      </h1>
-      <p className="self-start ml-16 not-italic font-normal text-base leading-6 w-80 h-6  mt-8 text-gray-500 ">
-        정보를 입력하면 맞춤형 시나리오를 제공해요!
-      </p>
-      <form onSubmit={handleSubmit(onSubmit)} className="ml-4">
-        <div className="flex-col items-start mt-10 w-96 h-16">
-          <label>이름</label>
+      <div className="flex flex-col gap-[30px] px-4">
+        <h1 className="self-start not-italic font-bold text-display-lg leading-8 ">
+          사용자의 정보를<br></br>
+          입력해 주세요.
+        </h1>
+        <p className="self-start not-italic font-normal text-base leading-6 h-6  text-gray-500 ">
+          정보를 입력하면 맞춤형 시나리오를 제공해요!
+        </p>
+      </div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 pt-[28px] px-4 w-full"
+      >
+        <div className="flex flex-col gap-2">
+          <label className="text-xs">이름</label>
           <input
             type="text"
             id="name"
-            className="mt-4 text-display-base flex-col items-start  w-96 h-8 focus:outline-none border-2 border-x-0 border-t-0 focus:border-b-blue-500 caret-blue-500 border-b-gray-500"
+            className="text-xl flex-col items-start h-8 focus:outline-none border-2 border-x-0 border-t-0 focus:border-b-blue-500 caret-blue-500 border-b-gray-500"
             {...register('name')}
           />
         </div>
-        <div className="flex-col items-start mt-16 w-96 h-16">
-          <label>생년월일</label>
+        <div className="flex flex-col gap-2">
+          <label className="text-xs">생년월일</label>
           <input
             type="date"
             id="birth"
-            className=" text-display-base flex-col items-start mt-10 w-96 h-8 focus:outline-none mt-100 border-2 border-x-0  border-t-0 focus:border-b-blue-500 caret-blue-500 border-b-gray-500"
+            className=" text-xl flex-col items-start h-8 focus:outline-none border-2 border-x-0  border-t-0 focus:border-b-blue-500 caret-blue-500 border-b-gray-500"
+            placeholder="이름을 입력해주세요"
             {...register('birth')}
           />
         </div>
-        <div className="mt-16 flex ">
-          <label>성별</label>
-          <div className="mt-10 -ml-8 flex items- justify-start cursor-pointer">
-            <label>
+        <div className="flex flex-col gap-2">
+          <label className="text-xs">성별</label>
+          <div className="w-full flex items- justify-start cursor-pointer text-gray-600">
+            <label className="flex-1">
               <input
                 type="radio"
                 value="남성"
                 id="남성"
-                className="hidden mt-16 peer"
+                className="hidden peer text-xl"
                 {...register('gender')}
               ></input>
-              <div className="rounded-l-lg w-52 text-display-base h-12 flex items-center justify-center border-2 border-gray-300 peer-checked:border-blue-500 peer-checked:text-blue-500 cursor-pointer">
+              <div className="rounded-l-lg text-display-base h-12 flex items-center justify-center border-2 border-gray-300 peer-checked:border-blue-500 peer-checked:text-blue-500 cursor-pointer">
                 남성
               </div>
             </label>
-            <label className="flex  items-center justify-center cursor-pointer ">
+            <label className="flex-1  items-center justify-center cursor-pointer ">
               <input
                 type="radio"
                 value="여성"
                 id="여성"
-                className="hidden peer"
+                className="hidden peer text-xl"
                 {...register('gender')}
               ></input>
               <div
-                className="rounded-r-lg w-52 h-12 text-display-base flex items-center justify-center border-2 border-gray-300 peer-checked:border-blue-500 peer-checked:text-blue-500 cursor-pointer
+                className="rounded-r-lg h-12 text-display-base flex items-center justify-center border-2 border-gray-300 peer-checked:border-blue-500 peer-checked:text-blue-500 cursor-pointer
                             "
               >
                 여성
@@ -116,7 +122,9 @@ export default function App() {
             </label>
           </div>
         </div>
-        {isValid && isDirty ? <LinkButton /> : <DisabledLinkButton />}
+        <div className="fixed inset-x-0 bottom-0 p-4">
+          {isValid && isDirty ? <LinkButton /> : <DisabledLinkButton />}
+        </div>
       </form>
     </div>
   )

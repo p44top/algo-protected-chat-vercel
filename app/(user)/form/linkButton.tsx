@@ -1,10 +1,18 @@
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-
+import { useRouter } from 'next/navigation'
 export default function LinkButton() {
-    return (
-        <Button type="submit" className="w-96 h-12  mt-72 ml-5 rounded-xl">
-            <Link href="/list">시작하기</Link>
-        </Button>
-    )
+  const router = useRouter()
+
+  const clickHandler = () => {
+    router.push('/list')
+  }
+  return (
+    <Button
+      type="submit"
+      onClick={clickHandler}
+      className="w-96 h-12  mt-48 ml-3 rounded-xl"
+    >
+      시작하기
+    </Button>
+  )
 }

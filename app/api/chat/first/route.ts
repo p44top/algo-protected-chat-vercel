@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       },
       ...messages
     ],
-    temperature: 0.6,
+    temperature: 0.7,
     stream: true
   })
 

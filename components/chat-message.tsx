@@ -3,7 +3,7 @@ import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import { cn } from '@/lib/utils'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, MouseEvent, useMemo } from 'react'
 
 export interface ChatMessageProps {
   message: Message
@@ -26,16 +26,7 @@ const UserMessage = ({ children }: PropsWithChildren) => {
   )
 }
 
-function extractLinks(content: string): string[] {
-  // Regular expression to match URLs
-  const urlRegex = /(https?:\/\/[^\s]+)/g
-  // Match all URLs in the content
-  const matches = content.match(urlRegex)
-  // Return the array of URLs, or an empty array if no matches are found
-  return matches ? matches : []
-}
-
-const BotMessage = ({ content }: { content: string }) => {
+const BotMessage = ({ content }: { content: any }) => {
   return (
     <div
       className={
@@ -43,9 +34,17 @@ const BotMessage = ({ content }: { content: string }) => {
       }
     >
       <div className="flex w-4/5">
-        <p className="text-base bg-muted px-3 py-2.5 m-0 text-foreground rounded-md rounded-es-none">
-          {content}
-        </p>
+        <p
+          className="text-base bg-muted px-3 py-2.5 m-0 text-foreground rounded-md rounded-es-none"
+          dangerouslySetInnerHTML={{
+            __html: content
+              .join()
+              .replace(
+                /<([^>]+)>/,
+                '<a data-link-target="1" class="text-sky-600 cursor-pointer" href="#">$1</a>'
+              )
+          }}
+        ></p>
       </div>
     </div>
   )
@@ -58,17 +57,22 @@ export function ChatMessage({ message, onExit, ...props }: ChatMessageProps) {
         remarkPlugins={[remarkGfm, remarkMath]}
         components={{
           p({ children }) {
-            return message.role === 'user' ? (
-              <UserMessage>{children}</UserMessage>
-            ) : (
-              <BotMessage content={children as any} />
-            )
-          },
-          a({ children }) {
+            const onClick = (e: MouseEvent<HTMLDivElement>) => {
+              if (e.target) {
+                const target = e.target as HTMLElement
+                if (target.dataset?.linkTarget) {
+                  onExit()
+                }
+              }
+            }
             return (
-              <a className="text-sky-600 cursor-pointer" onClick={onExit}>
-                {children}
-              </a>
+              <div onClick={onClick}>
+                {message.role === 'user' ? (
+                  <UserMessage>{children}</UserMessage>
+                ) : (
+                  <BotMessage content={children as any} />
+                )}
+              </div>
             )
           }
         }}

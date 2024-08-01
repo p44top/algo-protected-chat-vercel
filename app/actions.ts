@@ -107,6 +107,7 @@ const getChatsStore = (id: string) => {
 }
 
 const setChatsStore = (id: string, messages: Message[]) => {
+  if (messages.length === 0) return
   const str = JSON.stringify({
     id,
     messages

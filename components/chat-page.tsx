@@ -16,9 +16,13 @@ export const ChatPageUsingStore = ({ id }: { id: string }) => {
   useInsert()
   const user = useAuth()
   useEffect(() => {
+    // This hides the address bar:
+    setTimeout(function () {
+      window.scrollTo(0, 1)
+    }, 0)
+
     const chat = getChat(id)
-    console.log(chat)
-    if (chat) {
+    if (chat?.id) {
       setChatInfo(chat)
     } else {
       // chat 정보가 없음. id가 invalid함. list로 리다이렉트

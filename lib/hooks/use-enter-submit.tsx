@@ -1,4 +1,4 @@
-import { useRef, type RefObject } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 
 export function useEnterSubmit(): {
   formRef: RefObject<HTMLFormElement>
@@ -18,6 +18,13 @@ export function useEnterSubmit(): {
       event.preventDefault()
     }
   }
+
+  useEffect(() => {
+    if (window.visualViewport)
+      window.visualViewport.onresize = () => {
+        formRef.current?.scrollIntoView()
+      }
+  }, [])
 
   return { formRef, onKeyDown: handleKeyDown }
 }

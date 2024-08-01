@@ -20,11 +20,11 @@ export const ChatDone = ({
   const [show, setShow] = useState(isVisible)
   const timer = useRef<ReturnType<typeof setTimeout>>()
 
-  const isSuccess = useMemo(() => {
-    if (!message) return false
-    const json = getSuccess(message)
-    return json || false
-  }, [message])
+  // const isSuccess = useMemo(() => {
+  //   if (!message) return false
+  //   const json = getSuccess(message)
+  //   return json || false
+  // }, [message])
 
   useEffect(() => {
     setShow(isVisible)
@@ -38,7 +38,7 @@ export const ChatDone = ({
         finishedChat(id)
         open()
         done()
-      }, 2000)
+      }, 0)
     }
 
     return () => {
@@ -49,7 +49,7 @@ export const ChatDone = ({
   return (
     <FadeInOutWrapper isVisible={show}>
       <div className="bg-foreground/80 size-full flex items-center justify-center place-center absolute inset-0">
-        <div className="flex justify-center items-center gap-2 rounded-full px-6 py-2 bg-background">
+        {/* <div className="flex justify-center items-center gap-2 rounded-full px-6 py-2 bg-background">
           {isSuccess ? (
             <>
               <span className="bg-primary size-8 flex justify-center items-center text-primary-foreground rounded-full">
@@ -93,7 +93,7 @@ export const ChatDone = ({
               <h4 className="display-lg font-bold">위험해요!</h4>
             </>
           )}
-        </div>
+        </div> */}
       </div>
     </FadeInOutWrapper>
   )

@@ -33,7 +33,7 @@ export function ChatList({ onExit, isLoading, messages }: ChatList) {
     [messages]
   )
   useEffect(() => {
-    if (filteredMessages.length > 20) {
+    if (filteredMessages.length > 3) {
       onExit()
     }
   }, [filteredMessages, onExit])

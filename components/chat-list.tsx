@@ -2,7 +2,7 @@
 
 import type { Message } from 'ai'
 import { ChatMessage } from './chat-message'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { getContent, getMessage, getSystem } from '@/lib/chat-api/parse'
 
 export interface ChatList {
@@ -13,6 +13,7 @@ export interface ChatList {
 
 const USER_COMMAND = ['상황극 시작', '상황극 종료', 'Hint', '링크를 클릭한다']
 export function ChatList({ onExit, isLoading, messages }: ChatList) {
+  const isAlreadySend = useRef(false)
   const filteredMessages = useMemo(
     () =>
       messages
@@ -33,8 +34,9 @@ export function ChatList({ onExit, isLoading, messages }: ChatList) {
     [messages]
   )
   useEffect(() => {
-    if (filteredMessages.length > 5) {
+    if (filteredMessages.length > 20 && !isAlreadySend.current) {
       onExit()
+      isAlreadySend.current = true
     }
   }, [filteredMessages, onExit])
 

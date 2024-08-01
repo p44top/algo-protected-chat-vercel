@@ -29,6 +29,7 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 
 export type handleSubmitType = UseChatHelpers['handleSubmit']
 export function Chat({ id, initialMessages = [], user }: ChatProps) {
+  const [block, setBlock] = useState(false)
   const [category, setCategory] = useState<string | null>('')
   const { isDone } = useDone(id)
   const {
@@ -87,17 +88,22 @@ export function Chat({ id, initialMessages = [], user }: ChatProps) {
   }, [id, messages])
 
   const onExit = useCallback(async () => {
+    setBlock(true)
     await append({
       id: nanoid(),
       content: '상황극 종료',
       role: 'user'
     })
+    setBlock(false)
   }, [append])
 
   return (
     <div
       className="group w-full overflow-y-auto overflow-x-hidden scrollbar-hide pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]"
       ref={scrollRef}
+      style={{
+        pointerEvents: block ? 'none' : 'auto'
+      }}
     >
       <div ref={messagesRef}>
         <ChatList messages={messages} onExit={onExit} />

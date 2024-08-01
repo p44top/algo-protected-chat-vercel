@@ -10,7 +10,7 @@ const CHAT_ID_STORE = 'c_id'
 const READED_CHAT_ID_STORE = 'ab_read'
 
 const getStartedDirStore = () => {
-  const store = localStorage.getItem(CURRENT_STARTED_CHAT) || '{}'
+  const store = sessionStorage.getItem(CURRENT_STARTED_CHAT) || '{}'
   const storeJson = JSON.parse(store) as Record<string, string>
   return storeJson
 }
@@ -22,7 +22,7 @@ const setStartedDirStore = (categoryId: string, chatId: string) => {
     [categoryId]: chatId
   }
   const storeStr = JSON.stringify(newStore)
-  localStorage.setItem(CURRENT_STARTED_CHAT, storeStr)
+  sessionStorage.setItem(CURRENT_STARTED_CHAT, storeStr)
 }
 
 const deleteStartedDirStore = (categoryId: string) => {
@@ -32,11 +32,11 @@ const deleteStartedDirStore = (categoryId: string) => {
     [categoryId]: undefined
   }
   const storeStr = JSON.stringify(newStore)
-  localStorage.setItem(CURRENT_STARTED_CHAT, storeStr)
+  sessionStorage.setItem(CURRENT_STARTED_CHAT, storeStr)
 }
 
 const getCategoryDirStore = () => {
-  const store = localStorage.getItem(CATEGORY_CHAT_ID_STORE) || '{}'
+  const store = sessionStorage.getItem(CATEGORY_CHAT_ID_STORE) || '{}'
   const storeJson = JSON.parse(store) as Record<string, string[]>
   return storeJson
 }
@@ -49,11 +49,11 @@ const setCategoryDirStore = (categoryId: string, chatId: string) => {
     [categoryId]: prevList.includes(chatId) ? prevList : [...prevList, chatId]
   }
   const storeStr = JSON.stringify(newStore)
-  localStorage.setItem(CATEGORY_CHAT_ID_STORE, storeStr)
+  sessionStorage.setItem(CATEGORY_CHAT_ID_STORE, storeStr)
 }
 
 const getReadDirStore = () => {
-  const store = localStorage.getItem(READED_CHAT_ID_STORE) || '[]'
+  const store = sessionStorage.getItem(READED_CHAT_ID_STORE) || '[]'
   const storeJson = JSON.parse(store) as string[]
   return storeJson
 }
@@ -64,11 +64,11 @@ const setReadDirStore = (chatId: string) => {
     ? prevStore
     : [...prevStore, chatId]
   const storeStr = JSON.stringify(newStore)
-  localStorage.setItem(READED_CHAT_ID_STORE, storeStr)
+  sessionStorage.setItem(READED_CHAT_ID_STORE, storeStr)
 }
 
 const getProfileDirStore = () => {
-  const store = localStorage.getItem(CHAT_PROFILE_STORE) || '{}'
+  const store = sessionStorage.getItem(CHAT_PROFILE_STORE) || '{}'
   const storeJson = JSON.parse(store) as Record<string, Profile>
   return storeJson
 }
@@ -80,28 +80,28 @@ const setProfileDirStore = (chatId: string, profile: Profile) => {
     [chatId]: profile
   }
   const storeStr = JSON.stringify(newStore)
-  localStorage.setItem(CHAT_PROFILE_STORE, storeStr)
+  sessionStorage.setItem(CHAT_PROFILE_STORE, storeStr)
 }
 
 const getUserStore = () => {
-  const store = localStorage.getItem(USER_INFO_STORE) || '{}'
+  const store = sessionStorage.getItem(USER_INFO_STORE) || '{}'
   const storeJson = JSON.parse(store) as UserInfo
   return storeJson
 }
 
 const setUserStore = (userInfo: UserInfo) => {
   const storeStr = JSON.stringify(userInfo)
-  localStorage.setItem(USER_INFO_STORE, storeStr)
+  sessionStorage.setItem(USER_INFO_STORE, storeStr)
 }
 
 const getNextChatId = () => {
-  const store = localStorage.getItem(CHAT_ID_STORE) || '0'
-  localStorage.setItem(CHAT_ID_STORE, +store + 1 + '')
+  const store = sessionStorage.getItem(CHAT_ID_STORE) || '0'
+  sessionStorage.setItem(CHAT_ID_STORE, +store + 1 + '')
   return store as string
 }
 
 const getChatsStore = (id: string) => {
-  const store = localStorage.getItem(`${CHAT_STORE}-${id}`) || '{}'
+  const store = sessionStorage.getItem(`${CHAT_STORE}-${id}`) || '{}'
   const storeJson = JSON.parse(store) as Chat
   return storeJson
 }
@@ -112,7 +112,7 @@ const setChatsStore = (id: string, messages: Message[]) => {
     id,
     messages
   })
-  localStorage.setItem(`${CHAT_STORE}-${id}`, str)
+  sessionStorage.setItem(`${CHAT_STORE}-${id}`, str)
 }
 
 // TODO: 유저 정보 사용

@@ -1,10 +1,10 @@
 import { Message } from 'ai'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
-
 import { cn } from '@/lib/utils'
 import { MemoizedReactMarkdown } from '@/components/markdown'
 import { PropsWithChildren } from 'react'
+import TypoAnimation from '@/lib/hooks/use-streamable-text'
 
 export interface ChatMessageProps {
   message: Message
@@ -27,7 +27,7 @@ const UserMessage = ({ children }: PropsWithChildren) => {
   )
 }
 
-const BotMessage = ({ children }: PropsWithChildren) => {
+const BotMessage = ({ content }: { content: string }) => {
   return (
     <div
       className={
@@ -36,7 +36,7 @@ const BotMessage = ({ children }: PropsWithChildren) => {
     >
       <div className="flex w-4/5">
         <p className="text-base bg-muted px-3 py-2.5 m-0 text-foreground rounded-md rounded-es-none">
-          {children}
+          <TypoAnimation fullText={content} />
         </p>
       </div>
     </div>
@@ -53,7 +53,7 @@ export function ChatMessage({ message, onExit, ...props }: ChatMessageProps) {
             return message.role === 'user' ? (
               <UserMessage>{children}</UserMessage>
             ) : (
-              <BotMessage>{children}</BotMessage>
+              <BotMessage content={children as string} />
             )
           },
           a({ children }) {

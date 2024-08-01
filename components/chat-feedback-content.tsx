@@ -1,16 +1,8 @@
+import { getParseFeedback } from '@/lib/chat-api/parse'
 import { useMemo } from 'react'
 
 interface ChatFeedBackContentProps {
   message?: string
-}
-
-interface expectedParsing {
-  success: false
-  Point: string
-  summary: string
-  good: string
-  bad: string
-  extra: string
 }
 
 export const List = ({
@@ -18,8 +10,9 @@ export const List = ({
   message
 }: {
   label: string
-  message: string
+  message?: string
 }) => {
+  if (!message) return <></>
   return (
     <div className="flex flex-col gap-4">
       <h3 className="text-display-sm font-bold">{label}</h3>
@@ -31,7 +24,7 @@ export const List = ({
 export const ChatFeedBackContent = ({ message }: ChatFeedBackContentProps) => {
   const parsedMessage = useMemo(() => {
     if (!message) return
-    const json = JSON.parse(message) as expectedParsing
+    const json = getParseFeedback(message)
     return json
   }, [message])
 

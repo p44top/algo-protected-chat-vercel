@@ -3,17 +3,22 @@
 import {
   useCategory,
   IPreviewChatList,
-  getPreviewChatList
+  getPreviewChatList,
+  category
 } from '@/app/(chat)/list/action'
 import { PreviewChat } from './preview-chat'
 import { useEffect, useState } from 'react'
+import { useAuth } from '@/lib/useAuth'
+import { RequestCheckBox } from './preview-chat-request'
+import { UserInfo } from '@/lib/types'
+import { getContent } from '@/lib/chat-api/parse'
 
 const PreviewList = ({ list }: { list: IPreviewChatList[] }) => {
   return list.map(val => (
     <PreviewChat
       key={val.id}
       id={val.id}
-      info={val.lastMessage}
+      info={getContent(val.lastMessage)}
       title={val.title}
       badge={val.notReadCount}
       thumbnail={val.thumbnail}
@@ -21,46 +26,34 @@ const PreviewList = ({ list }: { list: IPreviewChatList[] }) => {
   ))
 }
 
-const Loading = () => {
-  return (
-    <div className="animate-pulse flex flex-col px-5 gap-8">
-      {Array.from({ length: 4 }).map((_, idx) => (
-        <div key={idx} className="flex gap-2 items-center">
-          <div className="rounded-full bg-slate-200 size-12"></div>
-          <div className="flex-1 space-y-6 py-1">
-            <div className="flex justify-between">
-              <div className="h-2 w-3/5 bg-slate-200 rounded"></div>
-              <div className="h-2 w-1/12 bg-slate-200 rounded"></div>
-            </div>
-            <div className="space-y-3">
-              <div className="w-9/12 grid grid-cols-3 gap-4">
-                <div className="h-2 bg-slate-200 rounded col-span-2"></div>
-                <div className="h-2 bg-slate-200 rounded col-span-1"></div>
-              </div>
-              <div className="w-4/5 h-2 bg-slate-200 rounded"></div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-const Empty = () => {
-  // TODO: 요청해서 id, profile, 대화 저장하기
-  return <></>
+const Empty = ({ category, user }: { category: category; user: UserInfo }) => {
+  if (category === '0')
+    return (
+      <div className="flex flex-col-reverse gap-2">
+        <RequestCheckBox category={'1'} user={user} />
+        <RequestCheckBox category={'2'} user={user} />
+        <RequestCheckBox category={'3'} user={user} />
+        <RequestCheckBox category={'4'} user={user} />
+      </div>
+    )
+  return <RequestCheckBox category={category} user={user} />
 }
 
 export const PreviewChatList = () => {
   const [list, setList] = useState<IPreviewChatList[] | undefined>(undefined)
   const category = useCategory()
 
+  const userInfo = useAuth()
   useEffect(() => {
     const previewList = getPreviewChatList(category)
     setList(previewList)
   }, [category])
 
-  if (list) return list.length === 0 ? <Empty /> : <PreviewList list={list} />
-
-  return <Loading />
+  if (!userInfo) return <></>
+  return (
+    <>
+      <Empty category={category} user={userInfo} />
+      <PreviewList key={category} list={list || []} />
+    </>
+  )
 }

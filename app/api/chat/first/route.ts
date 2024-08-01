@@ -1,4 +1,4 @@
-import { getPromptByCategory } from '@/lib/chat-api/getPrompt'
+import { getStartPrompt } from '@/lib/chat-api/getStartPrompt'
 import { nanoid } from '@/lib/utils'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { Configuration, OpenAIApi } from 'openai-edge'
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       {
         id: nanoid(),
         role: 'user',
-        content: getPromptByCategory(category, user)
+        content: getStartPrompt(category, user)
       },
       ...messages
     ],

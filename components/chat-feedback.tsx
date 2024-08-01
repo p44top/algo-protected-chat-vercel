@@ -66,7 +66,7 @@ const ChatContent = ({ content }: { content?: string }) => {
               cy="12"
               r="10"
               stroke="currentColor"
-              stroke-width="4"
+              strokeWidth="4"
             ></circle>
             <path
               className="opacity-75"
@@ -109,7 +109,6 @@ export const ChatFeedBack = ({ id, isDone, feedback }: ChatFeedbackProps) => {
           </div>
         </div>
       </FadeInOutWrapper>
-      {!isOpen && <div onClick={open}>trigger</div>}
     </>
   )
 }

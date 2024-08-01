@@ -4,9 +4,6 @@ export type { Message }
 
 export interface Chat extends Record<string, any> {
   id: string
-  title: string
-  createdAt: Date
-  path: string
   messages: Message[]
 }
 

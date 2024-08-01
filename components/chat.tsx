@@ -3,7 +3,7 @@
 import { cn, nanoid } from '@/lib/utils'
 import { ChatList } from '@/components/chat-list'
 import { ChatPanel } from '@/components/chat-panel'
-import { Message } from '@/lib/types'
+import { Message, UserInfo } from '@/lib/types'
 import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
 import { useChat, UseChatHelpers } from 'ai/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -12,15 +12,24 @@ import { ChatHint } from './chat-hint'
 import { ChatDone } from './chat-done'
 import { useDone } from '@/app/(chat)/[id]/action'
 import { ChatFeedBack } from './chat-feedback'
+import {
+  getContent,
+  getHintInfo,
+  getMessage,
+  getParseFeedback,
+  getSummary,
+  getSystem
+} from '@/lib/chat-api/parse'
 
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
   id: string
+  user?: UserInfo
 }
 
 const USER_COMMAND = ['상황극 시작', '상황극 종료', 'Hint', '링크를 클릭한다']
 export type handleSubmitType = UseChatHelpers['handleSubmit']
-export function Chat({ id, initialMessages = [], className }: ChatProps) {
+export function Chat({ id, initialMessages = [], user, className }: ChatProps) {
   const [category, setCategory] = useState<string | null>('')
   const { isDone } = useDone(id)
   const {
@@ -37,7 +46,8 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
     id,
     body: {
       id,
-      category
+      category,
+      user
     },
     onResponse(response) {
       if (response.status === 401) {
@@ -45,8 +55,7 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
       } else {
         // TODO: storage에 저장히기
       }
-    },
-    api: ''
+    }
   })
   const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } =
     useScrollAnchor()
@@ -65,8 +74,8 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
       messages
         .filter(({ role, content }) => {
           if (role === 'user') return !USER_COMMAND.includes(content)
-          if (role === 'system')
-            return content.includes('Message') && JSON.parse(content)?.Message
+          if (getSystem(role))
+            return getMessage(content) || getContent(content) || false
           return false
         })
         .map(val =>
@@ -74,7 +83,7 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
             ? val
             : ({
                 ...val,
-                content: JSON.parse(val.content)?.Message
+                content: getMessage(val.content) || getContent(val.content)
               } as Message)
         ),
     [messages]
@@ -82,20 +91,14 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
 
   const Hint = useMemo(() => {
     const lastHintMessage = messages.findLast(
-      ({ role, content }) =>
-        role === 'system' &&
-        content.includes('Hint') &&
-        JSON.parse(content)?.Hint
+      ({ role, content }) => getSystem(role) && getHintInfo(content)
     )
     return lastHintMessage
   }, [messages])
 
   const FeedBack = useMemo(() => {
     const FeedBack = messages.findLast(
-      ({ role, content }) =>
-        role === 'system' &&
-        content.includes('summary') &&
-        JSON.parse(content)?.summary
+      ({ role, content }) => getSystem(role) && getSummary(content)
     )
     return FeedBack
   }, [messages])
@@ -141,7 +144,7 @@ export function Chat({ id, initialMessages = [], className }: ChatProps) {
         setMessages={setMessages}
         append={append}
       />
-      {!isDone && (
+      {!isDone && FeedBack?.content && (
         <ChatDone
           id={id}
           message={FeedBack?.content}

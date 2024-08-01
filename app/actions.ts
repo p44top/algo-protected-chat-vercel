@@ -1,37 +1,38 @@
-import { Profile, UserInfo, type Chat } from '@/lib/types'
+import { Message, Profile, UserInfo, type Chat } from '@/lib/types'
 import { category } from './(chat)/list/action'
 
 const CATEGORY_CHAT_ID_STORE = 'ab_c_list'
 const CHAT_STORE = 'ab_c_dir'
-const CHAT_PROFILE_STORE = 'ab_p_list'
-const NEXT_STAGE_STORE = 'ab_s_dir'
+const CHAT_PROFILE_STORE = 'ab_p'
+const CURRENT_STARTED_CHAT = 'ab_c_dir'
+const USER_INFO_STORE = 'user_info'
+const CHAT_ID_STORE = 'c_id'
+const READED_CHAT_ID_STORE = 'ab_read'
 
-const defaultStage: Record<string, number> = {
-  '1': 0,
-  '2': 0,
-  '3': 0,
-  '4': 0
-}
-const getNextStageDirStore = () => {
-  const store = localStorage.getItem(NEXT_STAGE_STORE) || '{}'
-  if (store === '{}') {
-    localStorage.setItem(NEXT_STAGE_STORE, JSON.stringify(defaultStage))
-    return defaultStage
-  }
-  const storeJson = JSON.parse(store) as Record<string, number>
+const getStartedDirStore = () => {
+  const store = localStorage.getItem(CURRENT_STARTED_CHAT) || '{}'
+  const storeJson = JSON.parse(store) as Record<string, string>
   return storeJson
 }
 
-const setNextStageDirStore = (categoryId: string) => {
-  const prevStore = getNextStageDirStore()
-  const nextStage = (prevStore[categoryId] || 0) + 1
+const setStartedDirStore = (categoryId: string, chatId: string) => {
+  const prevStore = getStartedDirStore()
   const newStore = {
     ...prevStore,
-    [categoryId]: nextStage
+    [categoryId]: chatId
   }
   const storeStr = JSON.stringify(newStore)
-  localStorage.setItem(CATEGORY_CHAT_ID_STORE, storeStr)
-  return nextStage
+  localStorage.setItem(CURRENT_STARTED_CHAT, storeStr)
+}
+
+const deleteStartedDirStore = (categoryId: string) => {
+  const prevStore = getStartedDirStore()
+  const newStore = {
+    ...prevStore,
+    [categoryId]: undefined
+  }
+  const storeStr = JSON.stringify(newStore)
+  localStorage.setItem(CURRENT_STARTED_CHAT, storeStr)
 }
 
 const getCategoryDirStore = () => {
@@ -47,6 +48,21 @@ const setCategoryDirStore = (categoryId: string, chatId: string) => {
     ...prevStore,
     [categoryId]: prevList.includes(chatId) ? prevList : [...prevList, chatId]
   }
+  const storeStr = JSON.stringify(newStore)
+  localStorage.setItem(CATEGORY_CHAT_ID_STORE, storeStr)
+}
+
+const getReadDirStore = () => {
+  const store = localStorage.getItem(READED_CHAT_ID_STORE) || '[]'
+  const storeJson = JSON.parse(store) as string[]
+  return storeJson
+}
+
+const setReadDirStore = (chatId: string) => {
+  const prevStore = getReadDirStore()
+  const newStore = prevStore.includes(chatId)
+    ? [...prevStore, chatId]
+    : prevStore
   const storeStr = JSON.stringify(newStore)
   localStorage.setItem(CATEGORY_CHAT_ID_STORE, storeStr)
 }
@@ -67,10 +83,35 @@ const setProfileDirStore = (chatId: string, profile: Profile) => {
   localStorage.setItem(CHAT_PROFILE_STORE, storeStr)
 }
 
+const getUserStore = () => {
+  const store = localStorage.getItem(USER_INFO_STORE) || '{}'
+  const storeJson = JSON.parse(store) as UserInfo
+  return storeJson
+}
+
+const setUserStore = (userInfo: UserInfo) => {
+  const storeStr = JSON.stringify(userInfo)
+  localStorage.setItem(USER_INFO_STORE, storeStr)
+}
+
+const getNextChatId = () => {
+  const store = localStorage.getItem(CHAT_ID_STORE) || '0'
+  localStorage.setItem(CHAT_ID_STORE, +store + 1 + '')
+  return store as string
+}
+
 const getChatsStore = (id: string) => {
   const store = localStorage.getItem(`${CHAT_STORE}-${id}`) || '{}'
   const storeJson = JSON.parse(store) as Chat
   return storeJson
+}
+
+const setChatsStore = (id: string, messages: Message[]) => {
+  const str = JSON.stringify({
+    id,
+    messages
+  })
+  localStorage.setItem(`${CHAT_STORE}-${id}`, str)
 }
 
 const setChatsDirStore = (chat: Chat) => {
@@ -79,12 +120,14 @@ const setChatsDirStore = (chat: Chat) => {
 }
 
 // TODO: 유저 정보 사용
-const getUserInfo = () => {
-  return {} as UserInfo
+export const getUserInfo = () => {
+  return getUserStore()
 }
 
 // TODO: 유저 정보 저장하기
-const setUserInfo = (info: UserInfo) => {}
+export const setUserInfo = (info: UserInfo) => {
+  setUserStore(info)
+}
 
 export function getCategory(id: string) {
   const storeJson = getCategoryDirStore()
@@ -114,4 +157,39 @@ export function getChatsByCategory(category: category) {
 
 export function getChat(id: string): Chat {
   return getChatsStore(id)
+}
+
+export const getNewChatId = () => {
+  return getNextChatId()
+}
+
+export const createChat = (
+  id: string,
+  messages: Message[],
+  profile: Profile,
+  category: string
+) => {
+  setChatsStore(id, messages)
+  setProfileDirStore(id, profile)
+  setCategoryDirStore(category, id)
+  setStartedDirStore(category, id)
+}
+
+export const getStartedChatId = (category: string) => {
+  const storeDir = getStartedDirStore()
+  return storeDir?.[category]
+}
+
+export const finishedChat = (chatId: string) => {
+  const category = getCategory(chatId)
+  if (category !== -1) deleteStartedDirStore(category)
+}
+
+export const readChatID = (chatId: string) => {
+  setReadDirStore(chatId)
+}
+
+export const isReadChatID = (chatId: string) => {
+  const readIdList = getReadDirStore()
+  return readIdList.includes(chatId)
 }

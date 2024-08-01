@@ -1,7 +1,11 @@
 import { useCallback } from 'react'
 import { create, useStore } from 'zustand'
 import { Chat } from '@/lib/types'
-import { getChatBotProfile, getChatsByCategory } from '@/app/actions'
+import {
+  getChatBotProfile,
+  getChatsByCategory,
+  isReadChatID
+} from '@/app/actions'
 
 export const CATEGORY_LIST = [
   { value: '0', label: '전체' },
@@ -55,15 +59,13 @@ export const useCategory = () => {
 }
 
 const getExtraPreviewChatList = (Chat: Chat): IPreviewChatList => {
-  // TODO:  title, thumbnail, notReadCount 정보 localStorage에서 찾아오기
   const { name, thumbnail } = getChatBotProfile(Chat.id)
-  const { notReadCount } = { notReadCount: 0 }
   return {
     id: Chat.id,
     title: name,
     thumbnail,
     lastMessage: Chat.messages[Chat.messages.length - 1].content as string,
-    notReadCount
+    notReadCount: isReadChatID(Chat.id) ? 0 : 1
   }
 }
 export const getPreviewChatList = (category: category): IPreviewChatList[] => {

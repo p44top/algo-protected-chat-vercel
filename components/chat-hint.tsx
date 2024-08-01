@@ -1,3 +1,5 @@
+'use client'
+
 import { Message } from 'ai'
 import { UseChatHelpers } from 'ai/react'
 import { Button } from './ui/button'
@@ -17,13 +19,13 @@ const HintMessage = ({ content }: { content: string }) => {
 }
 
 export const ChatHint = (props: ChatHintProps) => {
-  const { isShow, safeRender, onClosed } = useChatHint(props)
+  const { isShow, lastMessage, safeRender, onClosed } = useChatHint(props)
 
   if (isShow) {
     return (
       <div
         onClick={onClosed}
-        className="absolute inset-0 z-50 w-screen h-screen bg-foreground/80 flex flex-col items-center justify-center gap-6"
+        className="overflow-hidden absolute inset-0 z-50 w-screen h-screen bg-foreground/80 flex flex-col items-center justify-center gap-6"
       >
         <div className="flex flex-col items-center justify-center gap-3">
           {safeRender('info', content => (
@@ -42,6 +44,22 @@ export const ChatHint = (props: ChatHintProps) => {
         >
           닫기
         </Button>
+        {lastMessage && (
+          <>
+            <span className="h-36"></span>
+            <div
+              className={
+                'absolute bottom-[128px] left-4 flex w-full break-words whitespace-break-spaces cursor-default'
+              }
+            >
+              <div className="flex w-4/5">
+                <p className="text-base bg-muted px-3 py-2.5 m-0 text-foreground rounded-lg rounded-es-none border-8 border-primary">
+                  {lastMessage}
+                </p>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     )
   }

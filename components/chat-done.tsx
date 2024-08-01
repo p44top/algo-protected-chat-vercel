@@ -3,6 +3,7 @@
 import { useControlFeedBack } from '@/app/(chat)/[id]/action'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { FadeInOutWrapper } from './ui/animation/fadeInOut'
+import { getSuccess } from '@/lib/chat-api/parse'
 
 export const ChatDone = ({
   id,
@@ -19,8 +20,8 @@ export const ChatDone = ({
 
   const isSuccess = useMemo(() => {
     if (!message) return false
-    const json = JSON.parse(message)
-    return json?.success || false
+    const json = getSuccess(message)
+    return json || false
   }, [message])
 
   useEffect(() => {

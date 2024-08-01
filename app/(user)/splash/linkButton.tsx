@@ -3,8 +3,10 @@ import Link from 'next/link'
 
 export default function LinkButton() {
     return (
-        <Button type="submit" className="w-96 h-12  mt-10 rounded-xl">
-            <Link href="/form">시작하기</Link>
-        </Button>
+        <Link href="/form">
+            <Button type="submit" className="w-96 h-12  mt-20 rounded-xl">
+                시작하기
+            </Button>
+        </Link>
     )
 }

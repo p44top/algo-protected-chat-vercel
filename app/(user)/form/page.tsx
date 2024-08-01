@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import revertImage from './png/revertImage.png'
+import revertImage from '../../../public/webp/revertImage.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import LinkButton from './linkButton'
@@ -30,18 +30,18 @@ export default function App() {
     const watchedValues = watch() // 모든 값을 감시합니다.
 
     return (
-        <div className="flex flex-col">
-            <Link href="/splash">
+        <div className="flex flex-col  justify-center items-center">
+            <Link href="/splash" className="ml-8">
                 <Image src={revertImage} alt="revertImage"></Image>
             </Link>
-            <h1 className="not-italic font-bold text-display-lg leading-8">
+            <h1 className="self-start ml-16 not-italic font-bold text-display-lg leading-8 ">
                 사용자의 정보를<br></br>
                 입력해 주세요.
             </h1>
-            <p className="not-italic font-normal text-base leading-6 w-80 h-6  mt-8 text-gray-500">
+            <p className="self-start ml-16 not-italic font-normal text-base leading-6 w-80 h-6  mt-8 text-gray-500 ">
                 정보를 입력하면 맞춤형 시나리오를 제공해요!
             </p>
-            <form onSubmit={handleSubmit((e) => console.log(e))}>
+            <form onSubmit={handleSubmit((e) => console.log(e))} className="ml-4">
                 <div className="flex-col items-start mt-10 w-96 h-16">
                     <label>이름</label>
                     <input

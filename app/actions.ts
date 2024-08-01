@@ -116,13 +116,8 @@ const setChatsStore = (id: string, messages: Message[]) => {
 
 // TODO: 유저 정보 사용
 export const getUserInfo = () => {
-  const dummy: UserInfo = {
-    name: '한알고',
-    age: 24,
-    gender: 'female'
-  }
-  return dummy
-  return getUserStore()
+  const user: UserInfo = getUserStore()
+  return user
 }
 
 // TODO: 유저 정보 저장하기

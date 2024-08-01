@@ -63,14 +63,13 @@ export const PreviewNotReadChat = ({
   const [profile, setProfile] = useState<Profile | undefined>(undefined)
 
   useEffect(() => {
-    // TODO: profile 정보 가져오기
     try {
       const name = getName(message.content) || '김알고'
       const content = getContent(message.content)
       if (!content) throw 'parsing error'
       const profile: Profile = {
         name,
-        thumbnail: '/profile/1.png'
+        thumbnail: getRandomProfile(category)
       }
       setProfile(profile)
       setContent(content)

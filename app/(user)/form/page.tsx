@@ -2,7 +2,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import revertImage from '../../../public/webp/revertImage.png'
+import revertImage from '../../../public/webp/revertImage.webp'
 import Image from 'next/image'
 import Link from 'next/link'
 import LinkButton from './linkButton'

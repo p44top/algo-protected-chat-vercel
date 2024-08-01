@@ -125,13 +125,11 @@ export function Chat({ id, initialMessages = [], user }: ChatProps) {
         setMessages={setMessages}
         append={append}
       />
-      {!isDone && FeedBack?.content && (
-        <ChatDone
-          id={id}
-          message={FeedBack?.content}
-          isVisible={FeedBack?.content ? true : false}
-        />
-      )}
+      <ChatDone
+        id={id}
+        message={FeedBack?.content}
+        isVisible={!isDone && FeedBack?.content ? true : false}
+      />
       <ChatFeedBack id={id} feedback={FeedBack} isDone={isDone} />
     </div>
   )

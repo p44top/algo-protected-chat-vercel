@@ -10,16 +10,21 @@ export interface Chat extends Record<string, any> {
   messages: Message[]
 }
 
+export interface Profile {
+  name: string
+  thumbnail?: string
+}
+
 export type ServerActionResult<Result> = Promise<
   | Result
   | {
-    error: string
-  }
+      error: string
+    }
 >
 
 export interface UserInfo {
-  name: string;
-  age: number;
+  name: string
+  age: number
   gender: 'female' | 'male'
 }
 

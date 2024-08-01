@@ -1,17 +1,93 @@
-import { redirect } from 'next/navigation'
-
-import { type Chat } from '@/lib/types'
+import { Profile, UserInfo, type Chat } from '@/lib/types'
 import { category } from './(chat)/list/action'
 
 const CATEGORY_CHAT_ID_STORE = 'ab_c_list'
+const CHAT_STORE = 'ab_c_dir'
+const CHAT_PROFILE_STORE = 'ab_p_list'
+const NEXT_STAGE_STORE = 'ab_s_dir'
 
-export function getChats() {
-  return [] as Chat[]
+const defaultStage: Record<string, number> = {
+  '1': 0,
+  '2': 0,
+  '3': 0,
+  '4': 0
+}
+const getNextStageDirStore = () => {
+  const store = localStorage.getItem(NEXT_STAGE_STORE) || '{}'
+  if (store === '{}') {
+    localStorage.setItem(NEXT_STAGE_STORE, JSON.stringify(defaultStage))
+    return defaultStage
+  }
+  const storeJson = JSON.parse(store) as Record<string, number>
+  return storeJson
 }
 
-export function getCategory(id: string) {
+const setNextStageDirStore = (categoryId: string) => {
+  const prevStore = getNextStageDirStore()
+  const nextStage = (prevStore[categoryId] || 0) + 1
+  const newStore = {
+    ...prevStore,
+    [categoryId]: nextStage
+  }
+  const storeStr = JSON.stringify(newStore)
+  localStorage.setItem(CATEGORY_CHAT_ID_STORE, storeStr)
+  return nextStage
+}
+
+const getCategoryDirStore = () => {
   const store = localStorage.getItem(CATEGORY_CHAT_ID_STORE) || '{}'
   const storeJson = JSON.parse(store) as Record<string, string[]>
+  return storeJson
+}
+
+const setCategoryDirStore = (categoryId: string, chatId: string) => {
+  const prevStore = getCategoryDirStore()
+  const prevList = prevStore[categoryId] || []
+  const newStore = {
+    ...prevStore,
+    [categoryId]: prevList.includes(chatId) ? prevList : [...prevList, chatId]
+  }
+  const storeStr = JSON.stringify(newStore)
+  localStorage.setItem(CATEGORY_CHAT_ID_STORE, storeStr)
+}
+
+const getProfileDirStore = () => {
+  const store = localStorage.getItem(CHAT_PROFILE_STORE) || '{}'
+  const storeJson = JSON.parse(store) as Record<string, Profile>
+  return storeJson
+}
+
+const setProfileDirStore = (chatId: string, profile: Profile) => {
+  const prevStore = getProfileDirStore()
+  const newStore = {
+    ...prevStore,
+    [chatId]: profile
+  }
+  const storeStr = JSON.stringify(newStore)
+  localStorage.setItem(CHAT_PROFILE_STORE, storeStr)
+}
+
+const getChatsStore = (id: string) => {
+  const store = localStorage.getItem(`${CHAT_STORE}-${id}`) || '{}'
+  const storeJson = JSON.parse(store) as Chat
+  return storeJson
+}
+
+const setChatsDirStore = (chat: Chat) => {
+  const storeStr = JSON.stringify(chat)
+  localStorage.setItem(`${CHAT_STORE}-${chat.id}`, storeStr)
+}
+
+// TODO: 유저 정보 사용
+const getUserInfo = () => {
+  return {} as UserInfo
+}
+
+// TODO: 유저 정보 저장하기
+const setUserInfo = (info: UserInfo) => {}
+
+export function getCategory(id: string) {
+  const storeJson = getCategoryDirStore()
   const allList = Object.entries(storeJson).flatMap(([category, idList]) => {
     return idList.map(id => [category, id])
   })
@@ -21,73 +97,21 @@ export function getCategory(id: string) {
 }
 
 export function getChatBotProfile(id: string) {
+  const storeJson = getProfileDirStore()
+  const target = storeJson[id]
+  if (target) return target
   return {
-    name: '강남 경찰청',
-    thumbnail:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzUL4nAn02es6KW_q-Js7F-cpy5Nf-E8LSw&s'
+    name: '김철수',
+    thumbnail: ''
   }
 }
 
 export function getChatsByCategory(category: category) {
-  return [] as Chat[]
+  const storeJson = getCategoryDirStore()
+  const idList = storeJson[category] || []
+  return idList.map(id => getChat(id))
 }
 
 export function getChat(id: string): Chat {
-  return {
-    id: 'test',
-    createdAt: new Date('2024-02-11'),
-    path: '',
-    title: 'test',
-    messages: [
-      {
-        id: '2',
-        role: 'system',
-        content: JSON.stringify({
-          Message: '안녕하세요. 알고범죄님 맞으신가요?'
-        })
-      },
-      {
-        id: '7',
-        role: 'user',
-        content: '네. 무슨 일이세요?'
-      },
-      {
-        id: '12',
-        role: 'system',
-        content: JSON.stringify({
-          Message:
-            '안녕하세요. 저는 경찰서 사이버범죄 수사팀의 김형사입니다. 최근에 범죄 조직이 당신의 개인 정보를 도용하여 불법적인 활동에 연루된 것으로 확인되었습니다. 이 문제를 신속하게 해결하기 위해 몇 가지 확인 절차가 필요합니다. 잠시 시간을 내주실 수 있나요?'
-        })
-      },
-      {
-        id: '17',
-        role: 'user',
-        content: '제가 수업중이라서 이따 연락드려도 될까요?'
-      },
-      {
-        id: '22',
-        role: 'system',
-        content: JSON.stringify({
-          Message:
-            '아버님께서 오늘 별세하였기에 삼가 알려드립니다.\n 장례식장 위치: https://t.lyhFens'
-        })
-      }
-    ]
-  }
-}
-
-export function removeChat({ id, path }: { id: string; path: string }) {
-  console.log('remove chat')
-}
-
-export function clearChats() {
-  console.log('clear all chats')
-}
-
-export function saveChat(chat: Chat) {
-  console.log('save chat')
-}
-
-export function refreshHistory(path: string) {
-  redirect(path)
+  return getChatsStore(id)
 }

@@ -5,13 +5,12 @@ import { ChatFeedBackContent } from './chat-feedback-content'
 import { useControlFeedBack, useDone } from '@/app/(chat)/[id]/action'
 import { Button } from './ui/button'
 import { useRouter } from 'next/navigation'
-import { UIEventHandler, useCallback, useEffect, useRef, useState } from 'react'
+import { UIEventHandler, useCallback, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { FadeInOutWrapper } from './ui/animation/fadeInOut'
 
 export interface ChatFeedbackProps {
   id: string
-  isDone: boolean
   feedback?: Message
 }
 

@@ -76,13 +76,6 @@ export function Chat({ id, initialMessages = [], user }: ChatProps) {
     return FeedBack
   }, [messages])
 
-  const forcedFinished = useMemo(() => {
-    messages.findLast(({ role, content }) => {
-      if (role !== 'system') return false
-      return content.includes('강제 종료')
-    })
-  }, [messages])
-
   useEffect(() => {
     addMessages(id, messages)
   }, [id, messages])
@@ -112,7 +105,7 @@ export function Chat({ id, initialMessages = [], user }: ChatProps) {
       </div>
       <ChatPanel
         id={id}
-        isLoading={isLoading}
+        isLoading={block || isLoading}
         input={input}
         setInput={setInput}
         isAtBottom={isAtBottom}
@@ -130,7 +123,7 @@ export function Chat({ id, initialMessages = [], user }: ChatProps) {
         message={FeedBack?.content}
         isVisible={!isDone && FeedBack?.content ? true : false}
       />
-      <ChatFeedBack id={id} feedback={FeedBack} isDone={isDone} />
+      <ChatFeedBack id={id} feedback={FeedBack} />
     </div>
   )
 }

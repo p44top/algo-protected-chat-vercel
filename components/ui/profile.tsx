@@ -9,10 +9,10 @@ export const Profile = ({
   name?: string
 }) => {
   return (
-    <div className="size-12 rounded-full overflow-hidden bg-muted">
+    <div className="relative size-12 rounded-full overflow-hidden bg-muted">
       {thumbnail ? (
         <Image
-          layout="full"
+          fill
           src={thumbnail}
           alt={`${name} thumbnail`}
           className="size-full object-cover"

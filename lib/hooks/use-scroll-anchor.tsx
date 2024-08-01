@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-export const useScrollAnchor = () => {
+export const useScrollAnchor = (isLoading?: boolean) => {
   const messagesRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const visibilityRef = useRef<HTMLDivElement>(null)
@@ -16,6 +16,11 @@ export const useScrollAnchor = () => {
       })
     }
   }, [])
+
+  useEffect(() => {
+    if (!isLoading) scrollToBottom()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading])
 
   useEffect(() => {
     if (messagesRef.current) {

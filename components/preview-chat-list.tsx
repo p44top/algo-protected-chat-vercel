@@ -29,7 +29,7 @@ const PreviewList = ({ list }: { list: IPreviewChatList[] }) => {
 const Empty = ({ category, user }: { category: category; user: UserInfo }) => {
   if (category === '0')
     return (
-      <div className="flex flex-col-reverse gap-2">
+      <div className="flex flex-col-reverse">
         <RequestCheckBox category={'1'} user={user} />
         <RequestCheckBox category={'2'} user={user} />
         <RequestCheckBox category={'3'} user={user} />

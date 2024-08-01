@@ -6,6 +6,7 @@ import { PreviewChat } from './preview-chat'
 import { nanoid } from '@/lib/utils'
 import { Profile, UserInfo } from '@/lib/types'
 import { getContent, getName } from '@/lib/chat-api/parse'
+import { getRandomProfile } from '@/lib/chat-api/getProfile'
 
 const LoadingAndRequest = ({ append }: Pick<UseChatHelpers, 'append'>) => {
   const first = useRef(false)
@@ -23,12 +24,12 @@ const LoadingAndRequest = ({ append }: Pick<UseChatHelpers, 'append'>) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <></>
+  return <Loading />
 }
 
 const Loading = () => {
   return (
-    <div className="animate-pulse px-5">
+    <div className="animate-pulse px-5 py-6">
       <div className="flex gap-2 items-center">
         <div className="rounded-full bg-slate-200 size-12"></div>
         <div className="flex-1 space-y-6 py-1">
@@ -63,14 +64,13 @@ export const PreviewNotReadChat = ({
   const [profile, setProfile] = useState<Profile | undefined>(undefined)
 
   useEffect(() => {
-    // TODO: profile 정보 가져오기
     try {
       const name = getName(message.content) || '김알고'
       const content = getContent(message.content)
       if (!content) throw 'parsing error'
       const profile: Profile = {
         name,
-        thumbnail: '/profile/1.png'
+        thumbnail: getRandomProfile(category)
       }
       setProfile(profile)
       setContent(content)
@@ -107,7 +107,7 @@ export const RequestCheckBox = ({
 
   useEffect(() => {
     const curActiveChat = getStartedChatId(category)
-    if (curActiveChat) return
+    if (curActiveChat) return setNeedRequest(false)
     setNeedRequest(true)
   }, [])
 

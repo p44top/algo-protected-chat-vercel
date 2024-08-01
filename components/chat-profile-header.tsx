@@ -24,7 +24,7 @@ export function ChatProfileHeader({ id }: ChatProfileHeaderProps) {
   const { profile } = useChatBotProfile(id)
 
   return (
-    <header className="h-[92px] flex flex-col gap-2 w-full bg-muted justify-center items-center">
+    <header className="min-h-[92px] flex flex-col gap-2 w-full bg-muted justify-center items-center">
       <div className="absolute top-4 left-4" onClick={() => goBack()}>
         <Button
           variant="ghost"

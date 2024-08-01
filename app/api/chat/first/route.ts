@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   const { id = nanoid(), messages = [], category = '1', user } = json
 
   const res = await openai.createChatCompletion({
-    model: 'gpt-4o-mini-2024-07-18',
+    model: 'gpt-4-turbo',
     messages: [
       {
         id: nanoid(),
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       },
       ...messages
     ],
-    temperature: 0.5,
+    temperature: 0.6,
     stream: true
   })
 

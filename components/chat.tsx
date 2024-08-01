@@ -7,7 +7,7 @@ import { Message, UserInfo } from '@/lib/types'
 import { useScrollAnchor } from '@/lib/hooks/use-scroll-anchor'
 import { useChat, UseChatHelpers } from 'ai/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { getCategory } from '@/app/actions'
+import { addMessages, getCategory } from '@/app/actions'
 import { ChatHint } from './chat-hint'
 import { ChatDone } from './chat-done'
 import { useDone } from '@/app/(chat)/[id]/action'
@@ -27,9 +27,8 @@ export interface ChatProps extends React.ComponentProps<'div'> {
   user?: UserInfo
 }
 
-const USER_COMMAND = ['상황극 시작', '상황극 종료', 'Hint', '링크를 클릭한다']
 export type handleSubmitType = UseChatHelpers['handleSubmit']
-export function Chat({ id, initialMessages = [], user, className }: ChatProps) {
+export function Chat({ id, initialMessages = [], user }: ChatProps) {
   const [category, setCategory] = useState<string | null>('')
   const { isDone } = useDone(id)
   const {
@@ -48,17 +47,10 @@ export function Chat({ id, initialMessages = [], user, className }: ChatProps) {
       id,
       category,
       user
-    },
-    onResponse(response) {
-      if (response.status === 401) {
-        console.error(response.statusText)
-      } else {
-        // TODO: storage에 저장히기
-      }
     }
   })
   const { messagesRef, scrollRef, visibilityRef, isAtBottom, scrollToBottom } =
-    useScrollAnchor()
+    useScrollAnchor(isLoading)
 
   useEffect(() => {
     const category = getCategory(id)
@@ -68,26 +60,6 @@ export function Chat({ id, initialMessages = [], user, className }: ChatProps) {
     }
     setCategory(category)
   }, [id])
-
-  const filteredMessages = useMemo(
-    () =>
-      messages
-        .filter(({ role, content }) => {
-          if (role === 'user') return !USER_COMMAND.includes(content)
-          if (getSystem(role))
-            return getMessage(content) || getContent(content) || false
-          return false
-        })
-        .map(val =>
-          val.role === 'user'
-            ? val
-            : ({
-                ...val,
-                content: getMessage(val.content) || getContent(val.content)
-              } as Message)
-        ),
-    [messages]
-  )
 
   const Hint = useMemo(() => {
     const lastHintMessage = messages.findLast(
@@ -110,6 +82,10 @@ export function Chat({ id, initialMessages = [], user, className }: ChatProps) {
     })
   }, [messages])
 
+  useEffect(() => {
+    addMessages(id, messages)
+  }, [id, messages])
+
   const onExit = useCallback(async () => {
     await append({
       id: nanoid(),
@@ -123,10 +99,9 @@ export function Chat({ id, initialMessages = [], user, className }: ChatProps) {
       className="group w-full overflow-y-auto overflow-x-hidden scrollbar-hide pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]"
       ref={scrollRef}
     >
-      <div className={cn('pb-[120px] pt-0', className)} ref={messagesRef}>
-        {filteredMessages?.length > 0 && (
-          <ChatList messages={filteredMessages} onExit={onExit} />
-        )}
+      <div ref={messagesRef}>
+        <ChatList messages={messages} onExit={onExit} />
+        <span className="flex w-px h-[120px]"></span>
         <div className="w-full h-px" ref={visibilityRef} />
       </div>
       <ChatPanel

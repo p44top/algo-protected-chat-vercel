@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from 'react'
 import Textarea from 'react-textarea-autosize'
 import { Button } from '@/components/ui/button'
-import { IconSend, IconHiint } from '@/components/ui/icons'
+import { IconSend, IconHiint, IconSpinner } from '@/components/ui/icons'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
 import type { UseChatHelpers } from 'ai/react'
 import { useControlFeedBack, useControlHint } from '@/app/(chat)/[id]/action'
@@ -90,9 +90,15 @@ export function PromptForm({
             variant="ghost"
             disabled={isLoading || input.trim() === ''}
           >
-            <IconSend
-              className={isLoading || input.trim() === '' ? '' : 'text-primary'}
-            />
+            {isLoading ? (
+              <IconSpinner />
+            ) : (
+              <IconSend
+                className={
+                  isLoading || input.trim() === '' ? '' : 'text-primary'
+                }
+              />
+            )}
             <span className="sr-only">메시지 보내기</span>
           </Button>
         </div>

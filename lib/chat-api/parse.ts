@@ -20,14 +20,18 @@ export const getContent = (str: string) => {
   }
 }
 
+const checkStrBoolean = (str: string) => {
+  if (str === 'True' || str === 'true' || str === '1') return true
+  return false
+}
+
 export const getSuccess = (str: string) => {
   try {
     const data = JSON.parse(str)
-    return data?.success
+    const booleanStr = data?.success
+    return booleanStr ? checkStrBoolean(booleanStr) : false
   } catch (e) {
-    const namePattern = /"success":\s*"([^"]+)"/i
-    const nameMatch = str.match(namePattern)
-    return nameMatch ? nameMatch[1] : undefined
+    return str.includes('True') || str.includes('true') || str.includes('1')
   }
 }
 

@@ -25,7 +25,7 @@ export const ChatHint = (props: ChatHintProps) => {
     return (
       <div
         onClick={onClosed}
-        className="overflow-hidden absolute inset-0 z-50 w-screen h-screen bg-foreground/80 flex flex-col items-center justify-center gap-6"
+        className="overflow-hidden absolute inset-0 z-50  h-screen bg-foreground/80 flex flex-col items-center justify-center gap-6"
       >
         <div className="flex flex-col items-center justify-center gap-3">
           {safeRender('info', content => (

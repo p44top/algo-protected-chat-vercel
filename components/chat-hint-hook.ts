@@ -3,7 +3,13 @@ import { ChatHintProps } from './chat-hint'
 import { useControlHint } from '@/app/(chat)/[id]/action'
 import { ReactElement } from 'react-markdown/lib/react-markdown'
 import { nanoid } from '@/lib/utils'
-import { getContent, getHintInfo, getSystem } from '@/lib/chat-api/parse'
+import {
+  getContent,
+  getHintExample,
+  getHintInfo,
+  getMessage,
+  getSystem
+} from '@/lib/chat-api/parse'
 
 export const useChatHint = ({
   hint,
@@ -15,7 +21,7 @@ export const useChatHint = ({
     if (hint) {
       return {
         info: getHintInfo(hint.content) || '',
-        example: getHintInfo(hint.content) || ''
+        example: getHintExample(hint.content) || ''
       }
     }
     return {
@@ -24,8 +30,13 @@ export const useChatHint = ({
     }
   }, [hint])
   const lastMessage = useMemo(() => {
-    const lastSystemMessage = messages.findLast(val => getSystem(val.role))
-    return lastSystemMessage?.content || ''
+    const lastSystemMessage = messages.findLast(
+      val => getSystem(val.role) && !getHintInfo(val.content)
+    )
+    return lastSystemMessage
+      ? getContent(lastSystemMessage.content) ||
+          getMessage(lastSystemMessage.content)
+      : ''
   }, [messages])
   const { isOpen, close } = useControlHint()
 

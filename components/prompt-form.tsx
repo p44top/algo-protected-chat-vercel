@@ -43,10 +43,12 @@ export function PromptForm({
       onSubmit={async (e: any) => {
         e.preventDefault()
 
-        // Blur focus on mobile
-        if (window.innerWidth < 600) {
-          e.target['message']?.blur()
-        }
+        // // Blur focus on mobile
+        // if (window.innerWidth < 600) {
+        //   e.target['message']?.blur()
+        // }
+
+        if (isLoading) return
 
         const value = input.trim()
         setInput('')

@@ -23,12 +23,12 @@ const LoadingAndRequest = ({ append }: Pick<UseChatHelpers, 'append'>) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return <></>
+  return <Loading />
 }
 
 const Loading = () => {
   return (
-    <div className="animate-pulse px-5">
+    <div className="animate-pulse px-5 py-6">
       <div className="flex gap-2 items-center">
         <div className="rounded-full bg-slate-200 size-12"></div>
         <div className="flex-1 space-y-6 py-1">
@@ -107,7 +107,7 @@ export const RequestCheckBox = ({
 
   useEffect(() => {
     const curActiveChat = getStartedChatId(category)
-    if (curActiveChat) return
+    if (curActiveChat) return setNeedRequest(false)
     setNeedRequest(true)
   }, [])
 

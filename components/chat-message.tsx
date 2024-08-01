@@ -4,7 +4,6 @@ import remarkMath from 'remark-math'
 import { cn } from '@/lib/utils'
 import { MemoizedReactMarkdown } from '@/components/markdown'
 import { PropsWithChildren } from 'react'
-import TypoAnimation from '@/lib/hooks/use-streamable-text'
 
 export interface ChatMessageProps {
   message: Message
@@ -27,6 +26,15 @@ const UserMessage = ({ children }: PropsWithChildren) => {
   )
 }
 
+function extractLinks(content: string): string[] {
+  // Regular expression to match URLs
+  const urlRegex = /(https?:\/\/[^\s]+)/g
+  // Match all URLs in the content
+  const matches = content.match(urlRegex)
+  // Return the array of URLs, or an empty array if no matches are found
+  return matches ? matches : []
+}
+
 const BotMessage = ({ content }: { content: string }) => {
   return (
     <div
@@ -36,7 +44,7 @@ const BotMessage = ({ content }: { content: string }) => {
     >
       <div className="flex w-4/5">
         <p className="text-base bg-muted px-3 py-2.5 m-0 text-foreground rounded-md rounded-es-none">
-          <TypoAnimation fullText={content} />
+          {content}
         </p>
       </div>
     </div>
@@ -53,7 +61,7 @@ export function ChatMessage({ message, onExit, ...props }: ChatMessageProps) {
             return message.role === 'user' ? (
               <UserMessage>{children}</UserMessage>
             ) : (
-              <BotMessage content={children as string} />
+              <BotMessage content={children as any} />
             )
           },
           a({ children }) {

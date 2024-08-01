@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ReactNode } from 'react'
 import { motion } from 'framer-motion'
 
-const TypoAnimation = ({ fullText }: { fullText: string }) => {
+const TypoAnimation = ({ fullText }: { fullText: string | ReactNode[] }) => {
   const [text, setText] = useState('')
 
   useEffect(() => {
@@ -9,17 +9,17 @@ const TypoAnimation = ({ fullText }: { fullText: string }) => {
     const interval = setInterval(() => {
       if (currentIndex < fullText.length) {
         setText(prev => prev + fullText[currentIndex])
-        currentIndex += 1
+        currentIndex += fullText.length / 5
       } else {
         clearInterval(interval)
       }
-    }, 100) // Adjust the speed of typing here
+    }, 50) // Adjust the speed of typing here
 
     return () => clearInterval(interval)
   }, [fullText])
 
   return (
-    <div style={{ fontSize: '24px', fontFamily: 'monospace' }}>
+    <>
       {text.split('').map((char, index) => (
         <motion.span
           key={index}
@@ -30,7 +30,7 @@ const TypoAnimation = ({ fullText }: { fullText: string }) => {
           {char}
         </motion.span>
       ))}
-    </div>
+    </>
   )
 }
 

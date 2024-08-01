@@ -1,9 +1,10 @@
 'use client'
 
-import { useControlFeedBack } from '@/app/(chat)/[id]/action'
+import { useControlFeedBack, useDone } from '@/app/(chat)/[id]/action'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { FadeInOutWrapper } from './ui/animation/fadeInOut'
 import { getSuccess } from '@/lib/chat-api/parse'
+import { finishedChat } from '@/app/actions'
 
 export const ChatDone = ({
   id,
@@ -15,6 +16,7 @@ export const ChatDone = ({
   message?: string
 }) => {
   const { open } = useControlFeedBack()
+  const { done } = useDone(id)
   const [show, setShow] = useState(isVisible)
   const timer = useRef<ReturnType<typeof setTimeout>>()
 
@@ -33,7 +35,9 @@ export const ChatDone = ({
       // 2초 후에 본안을 닫고 피드백 팝업 열기
       timer.current = setTimeout(() => {
         setShow(false)
+        finishedChat(id)
         open()
+        done()
       }, 2000)
     }
 

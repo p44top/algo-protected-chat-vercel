@@ -34,7 +34,7 @@ export function ChatList({ onExit, isLoading, messages }: ChatList) {
     [messages]
   )
   useEffect(() => {
-    if (!isLoading && filteredMessages.length > 6 && !isAlreadySend.current) {
+    if (!isLoading && filteredMessages.length > 5 && !isAlreadySend.current) {
       onExit()
       isAlreadySend.current = true
     }
